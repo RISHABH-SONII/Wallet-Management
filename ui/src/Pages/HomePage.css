@@ -1,3 +1,88 @@
+/* .gridContainer {
+    margin: 0px;
+}
+
+.menuBar {
+    position: fixed;
+    background-color: rgb(4, 4, 57);
+    width: 80px;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    text-align: center;
+}
+
+.menuBar img {
+    padding-top: 10px;
+}
+
+.menuBar ul {
+    position: fixed;
+    list-style: none;
+    padding: 0px;
+    margin-top: 75px;
+}
+
+.menuBar ul li {
+    color: white;
+    padding: 5px 22px;
+    font-weight: bold;
+    margin-bottom: 95px;
+}
+
+.dashboardContainer {
+    background-color: rgb(7, 7, 80);
+    top: 0px;
+    bottom: 0px;
+    position: fixed;
+    right: 0px;
+}
+
+.header {
+    padding: 20px 0px;
+    margin: auto;
+    position: relative;
+    background-color: transparent;
+    color: black;
+    top: 10px;
+}
+
+.header-left {
+    background-color: transparent;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.header-left .searchGrid {
+    display: flex;
+}
+
+.header-left .searchGrid .form-control {
+    border-radius: 10px;
+    padding: 5px;
+    background: transparent;
+    color: #ccc;
+    caret-color: white;
+}
+
+.header-left .searchGrid .search-button {
+    margin-left: 10px;
+    font-size: 20px;
+    background-color: transparent;
+    border-radius: 10px;
+    color: white;
+}
+
+.mainContent {
+    margin: auto;
+    position: relative;
+    background-color: transparent;
+    padding: 10px 0px;
+    color: whitesmoke;
+} */
+
+
+
 .gridContainer{
     margin: 0px;
   }
@@ -9,7 +94,7 @@
     top: 0px;
     bottom: 0px;
     left: 0px ;
-    text-align: center;
+    padding: 0px;
   }
   
   .menuBar img{
@@ -21,15 +106,17 @@
     position: fixed;
     list-style: none;
     padding: 0px;
-    margin-top: 75px;
+    margin-top: 45px;
+    align-items: center;
     
   }
   
   .menuBar ul li{
     color: white;
-    padding: 5px 22px;
+    padding: 5px 15px;
     font-weight: bold;
     margin-bottom: 95px;
+    height: 95px;
   }
   
   .dashboardContainer{
@@ -37,8 +124,8 @@
     top: 0px;
     bottom: 0px;
     position: fixed;
-    width: 1455px;
-    right: 0px;
+    width: 1500px;
+    right: 53px;
   }
   
   .header{
@@ -80,7 +167,7 @@
       margin-top: 2px;
       width: 10%;
       height: 41px;
-      margin-left: 27px;
+      right: 50px;
       font-size: 25px;
       color: white;
       text-align: center;
