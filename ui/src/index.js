@@ -10,6 +10,7 @@ import Notifications from './Pages/Notifications';
 import UserProfile from './Pages/UserProfile';
 import Wallet from './Pages/Wallet';
 import Settings from './Pages/Settings';
+import Analytics from './Pages/Analytics';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -26,6 +27,10 @@ let allroutes=createBrowserRouter(
     {
       path:"/wallet",
       element:<Wallet/>
+    },
+    {
+      path:"/analytics",
+      element:<Analytics/>
     },
     {
       path:"/notification",
