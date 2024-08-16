@@ -35,7 +35,7 @@ h4{
 
 }
 .formInput{
-    border: none;
+    border: 0.2px solid white;
     padding: 5px;
     width: 250px;
     border-top-left-radius: 5px;
@@ -43,7 +43,9 @@ h4{
 }
 .formButton{
     padding: 5px;
-    border: none;
+    border: 0.2px solid white;
+    color: white;
+    background-color: rgb(16, 16, 55);
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
 }
