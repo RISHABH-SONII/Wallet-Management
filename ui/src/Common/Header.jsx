@@ -10,8 +10,11 @@ export default function Header() {
     console.log(iconMenu)
     return (
         <nav>
-            <ul>
+            <div class="nav-logo">
                 <li className='navItems'> <Link className='link' to={"/"}> <img src='ecash.png' style={{left:"0px", width:"75px", height:"70px"}}/></Link></li>
+            </div>
+            <ul>
+                
                 <li className='navItems'> <Link className='link' to={"/"}> <FontAwesomeIcon icon={faHome}/><div>Home</div> </Link></li>
                 <li className='navItems'> <Link className='link' to={"/userProfile"}> <FontAwesomeIcon icon={faUser}/><div>UserProfile</div> </Link></li>
                 <li className='navItems'> <Link className='link' to={"/wallet"}><FontAwesomeIcon icon={faWallet}/><div>Wallet</div> </Link></li>
