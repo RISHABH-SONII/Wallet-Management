@@ -5,7 +5,7 @@ import { faAnglesRight, faArrowDown, faArrowUp, faBell, faChartBar, faChartLine,
 import { Form, InputGroup } from 'react-bootstrap';
 import Header from '../Common/Header';
 import Footer from '../Common/Footer';
-import DashboardCard from '../Data/DashboardCard';
+import DashboardCard from '../Components/DashboardCard';
 
 export default function HomePage() {
     return (
@@ -15,7 +15,7 @@ export default function HomePage() {
                 <div className='body-panel-1'>
                     <h4>Dashboard</h4>
                     <form className='formClass'>
-                        <input className='formInput' type='text' />
+                        <input className='formInput' type='text' placeholder='Search here...'/>
                         <button className='formButton'><FontAwesomeIcon icon={faSearch} /></button>
                     </form>
                     <div className='pageName'>
