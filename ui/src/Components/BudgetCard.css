@@ -1,0 +1,48 @@
+* {
+    padding: 0px;
+    margin: 0px;
+}
+.budgetCarddiv{
+    background-color: transparent;
+    width: 650px;
+    background-color: rgb(14, 14, 91);
+    border: 0.1px solid white;
+    border-radius: 10px;
+    margin-bottom: 70px;
+    height: 300px;
+}
+.budgetCard .title{
+    font-weight: 700;
+}
+.budgetCard{
+    background-color: transparent;
+    color: white;
+}
+.budget-item{
+    margin-bottom: 10px;
+}
+.budget-item .icon{
+    color: white;
+    margin-right: 5px;
+}
+span{
+    color: white;
+}
+.budgetCarddiv:hover{
+    box-shadow: 0px 2px 10px rgba(15, 122, 230,1);
+}
+.listWrapper{
+    position: relative;
+    max-height: 200px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding-right: 20px;
+}
+
+::-webkit-scrollbar{
+    width: 2px;
+}
+
+::-webkit-scrollbar-thumb{
+    margin-left: 30px;
+}
