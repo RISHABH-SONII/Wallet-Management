@@ -1,11 +1,11 @@
 import React from 'react'
-import Header from '../Common/Header'
+import Header from '../Components/Layout/Header'
+import Layout from '../Components/Layout/Layout'
 
 export default function UserProfile() {
   return (
-    <div>
-            <Header/>
-            <h1>UserProfile Page</h1>
-        </div>
+    <Layout>
+      <h1>UserProfile Page</h1>
+    </Layout>
   )
 }
