@@ -1,11 +1,11 @@
 import React from 'react'
-import Header from '../Common/Header'
+import Header from '../Components/Layout/Header'
+import Layout from '../Components/Layout/Layout'
 
 export default function Analytics() {
   return (
-    <div>
-            <Header/>
-            <h1>Analytics Page</h1>
-        </div>
+    <Layout>
+      <h1>Analytics Page</h1>
+    </Layout>
   )
 }
