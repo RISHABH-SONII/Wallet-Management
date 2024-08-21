@@ -2,23 +2,38 @@
     padding: 0px;
     margin: 0px;
 }
-
-.home{
+.bodydiv{
+    margin-top: 1px;
+    bottom: 0px;
+    background-color: rgb(16, 16, 55);
     width: 100%;
     height: 100%;
 }
-.bodydiv{
-    position: absolute;
-    background-color: rgb(16, 16, 55);
-    width: 100%;
+
+::-webkit-scrollbar{
+    width: 10px;
+}
+
+::-webkit-scrollbar-track{
+    background: black;
+}
+
+::-webkit-scrollbar-thumb{
+    background-color: rgb(14, 14, 91);
+    border-radius: 10px;
+    border: 1px solid white;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background: white;
 }
 
 .body-panel-1{
-    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 30px;
+    padding-top: 10px;
 }
 h4{
     color: white;
@@ -35,7 +50,7 @@ h4{
 
 }
 .formInput{
-    border: 0.2px solid white;
+    border: 0.1px solid white;
     padding: 5px;
     width: 250px;
     border-top-left-radius: 5px;
@@ -43,9 +58,9 @@ h4{
 }
 .formButton{
     padding: 5px;
-    border: 0.2px solid white;
+    border: 0.1px solid white;
+    background-color: transparent;
     color: white;
-    background-color: rgb(16, 16, 55);
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
 }
@@ -71,5 +86,17 @@ h4{
     width: 100%;
     background-color: transparent;
     padding: 10px;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
+}
+
+.body-panel-3{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 5px;
+    padding-left: 15px;
+    justify-content: space-evenly;
+    width: 100%;
+    background-color: transparent;
+
 }
