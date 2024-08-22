@@ -11,8 +11,8 @@ namespace Backend.Models
             Response response = new Response();
             SqlCommand command = connection.CreateCommand();
             command.CommandText = @"
-                        INSERT INTO Users (FirstName, LastName, Password, Email, Role, CreatedAt, UpdatedAt)
-                        VALUES (@FirstName, @LastName, @Password, @Email, @Role, @CreatedAt, @UpdatedAt);
+                        INSERT INTO Users (FirstName, LastName, Password, Email, CreatedAt, UpdatedAt)
+                        VALUES (@FirstName, @LastName, @Password, @Email, @CreatedAt, @UpdatedAt);
                         SELECT SCOPE_IDENTITY();";
 
 
@@ -20,7 +20,6 @@ namespace Backend.Models
             command.Parameters.AddWithValue("@LastName", newUser.LastName);
             command.Parameters.AddWithValue("@Password", newUser.Password);
             command.Parameters.AddWithValue("@Email", newUser.Email);
-            command.Parameters.AddWithValue("@Role", newUser.Role);
             command.Parameters.AddWithValue("@CreatedAt", DateTime.Now);
             command.Parameters.AddWithValue("@UpdatedAt", DateTime.Now);
 
@@ -60,7 +59,6 @@ namespace Backend.Models
                 User.FirstName = Convert.ToString(dataTable.Rows[0]["FirstName"]);
                 User.LastName = Convert.ToString(dataTable.Rows[0]["LastName"]);
                 User.Email = Convert.ToString(dataTable.Rows[0]["Email"]);
-                User.Role = Convert.ToString(dataTable.Rows[0]["Role"]);
                 response.StatusCode = 200;
                 response.StatusMessage = "User Is Valid";
                 response.user = User;
@@ -93,7 +91,6 @@ namespace Backend.Models
                 User.LastName = Convert.ToString(dataTable.Rows[0]["LastName"]);
                 User.Password = Convert.ToString(dataTable.Rows[0]["Password"]);
                 User.Email = Convert.ToString(dataTable.Rows[0]["Email"]);
-                User.Role = Convert.ToString(dataTable.Rows[0]["Role"]);
                 User.CreatedAt = Convert.ToDateTime(dataTable.Rows[0]["CreatedAt"]);
                 User.UpdatedAt = Convert.ToDateTime(dataTable.Rows[0]["UpdatedAt"]);
                 response.StatusCode = 200;
@@ -113,15 +110,13 @@ namespace Backend.Models
         {
             Response response = new Response();
             SqlCommand command = connection.CreateCommand();
-            command.CommandText = @"UPDATE Users SET FirstName = @FirstName, LastName = @LastName, Password = @Password, Email = @Email WHERE UserID = @UserID;";
+            command.CommandText = @"UPDATE Users SET FirstName = @FirstName, LastName = @LastName, Password = @Password, Email = @Email, UpdatedAt = @UpdatedAt WHERE UserID = @UserID;";
             command.Parameters.AddWithValue("@UserID", users.UserId);
             command.Parameters.AddWithValue("@FirstName", users.FirstName);
             command.Parameters.AddWithValue("@LastName", users.LastName);
             command.Parameters.AddWithValue("@Password", users.Password);
             command.Parameters.AddWithValue("@Email", users.Email);
-            //command.Parameters.AddWithValue("@Role", users.Role);
-            //command.Parameters.AddWithValue("@CreatedAt", users.CreatedAt);
-            //command.Parameters.AddWithValue("@UpdatedAt", users.UpdatedAt);
+            command.Parameters.AddWithValue("@UpdatedAt", DateTime.Now);
 
             connection.Open();
             int i = command.ExecuteNonQuery();
