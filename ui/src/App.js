@@ -1,5 +1,4 @@
 import React from 'react'
-import Layout from './Components/Layout/Layout'
 import { BrowserRouter,Routes,Route } from 'react-router-dom';
 import HomePage from './Pages/HomePage';
 import UserProfile from './Pages/UserProfile';
@@ -8,9 +7,10 @@ import Analytics from './Pages/Analytics';
 import Notifications from './Pages/Notifications';
 import Settings from './Pages/Settings';
 import PageNotFound from './Pages/Notifications'
+import Support from './Pages/Support';
 function App() {
   return (
-    <div>
+    <div className='App'>
     <BrowserRouter>
     <Routes>
         <Route path='/' element={ <HomePage/> }/>
@@ -19,6 +19,7 @@ function App() {
         <Route path='/analytics' element={ <Analytics/> }/>
         <Route path='/notification' element={ <Notifications/> }/>
         <Route path='/settings' element={ <Settings/> }/>
+        <Route path='/support' element={ <Support/>}/>
         <Route path='*' element={ <PageNotFound/> }/>
     </Routes>
     </BrowserRouter>
