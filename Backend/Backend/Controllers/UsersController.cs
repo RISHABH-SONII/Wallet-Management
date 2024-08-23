@@ -30,7 +30,6 @@ namespace Backend.Controllers
 
         [HttpPost]
         [Route("login")]
-
         public Response login(Users users) 
         {
             Response response = new Response();
@@ -42,7 +41,6 @@ namespace Backend.Controllers
 
         [HttpPost]
         [Route("viewUser")]
-
         public Response viewUser(Users users)
         {
             Response response = new Response();
@@ -54,7 +52,6 @@ namespace Backend.Controllers
 
         [HttpPost]
         [Route("editUser")]
-
         public Response editUser(Users users)
         {
             Response response = new Response();
@@ -63,6 +60,192 @@ namespace Backend.Controllers
             response = dal.editUser(users, connection);
             return response;
         }
+
+        [HttpPost]
+        [Route("addWallet")]
+        public Response addWallet(Wallets wallets)
+        {
+            Response response = new Response();
+            Dal dal = new Dal();
+            SqlConnection connection = new SqlConnection(_connectionString);
+            response = dal.addWallet(wallets, connection);
+            return response;
+        }
+
+        [HttpPost]
+        [Route("viewWallet")]
+        public Response viewWallet(Wallets wallets)
+        {
+            Response response = new Response();
+            Dal dal = new Dal();
+            SqlConnection connection = new SqlConnection(_connectionString);
+            response = dal.viewWallet(wallets, connection);
+            return response;
+        }
+
+        [HttpPost]
+        [Route("editWallet")]
+        public Response editWallet(Wallets wallets)
+        {
+            Response response = new Response();
+            Dal dal = new Dal();
+            SqlConnection connection = new SqlConnection(_connectionString);
+            response = dal.editWallet(wallets,connection);
+            return response;
+        }
+
+        [HttpPost]
+        [Route("deleteWallet")]
+        public Response deleteWallet(Wallets wallets)
+        {
+            Response response = new Response();
+            Dal dal = new Dal();
+            SqlConnection connection = new SqlConnection(_connectionString);
+            response = dal.deleteWallet(wallets, connection);
+            return response;
+        }
+
+        [HttpPost]
+        [Route("addTransection")]
+
+        public Response addTransection(Transections transection)
+        {
+            Response response = new Response();
+            Dal dal = new Dal();
+            SqlConnection connection = new SqlConnection(_connectionString);
+            response = dal.addTransection(transection, connection);
+            return response;
+        }
+
+        [HttpPost]
+        [Route("editTransection")]
+        public Response editTransection(Transections transection)
+        {
+            Response response = new Response();
+            Dal dal = new Dal();
+            SqlConnection connection = new SqlConnection(_connectionString);
+            response = dal.editTransection(transection, connection);
+            return response;
+        }
+
+        [HttpPost]
+        [Route("deleteTransection")]
+        public Response deleteTransection(Transections transection)
+        {
+            Response response = new Response();
+            Dal dal = new Dal();
+            SqlConnection connection = new SqlConnection(_connectionString);
+            response = dal.deleteTransection(transection, connection);
+            return response;
+        }
+
+        [HttpGet]
+        [Route("showUsersList")]
+
+        public Response showUsersList() 
+        {
+            Response response = new Response();
+            Dal dal = new Dal();
+            SqlConnection connection = new SqlConnection(_connectionString);
+            response = dal.showUsersList(connection);
+            return response;
+        }
+
+        [HttpGet]
+        [Route("showUser/{id}")]
+        public Response showUser(int id)
+        {
+            Response response = new Response();
+            Dal dal = new Dal();
+            SqlConnection connection = new SqlConnection(_connectionString);
+            response = dal.showUserById(id,connection);
+            return response;
+        }
+
+        [HttpGet]
+        [Route("showWalletsList")]
+
+        public Response showWalletsList()
+        {
+            Response response = new Response();
+            Dal dal = new Dal();
+            SqlConnection connection = new SqlConnection(_connectionString);
+            response = dal.showWalletsList(connection);
+            return response;
+        }
+
+        [HttpGet]
+        [Route("showWallet/{id}")]
+        public Response showWallet(int id)
+        {
+            Response response = new Response();
+            Dal dal = new Dal();
+            SqlConnection connection = new SqlConnection(_connectionString);
+            response = dal.showWalletById(id, connection);
+            return response;
+        }
+
+        [HttpGet]
+        [Route("showTransectionsList")]
+
+        public Response showTransectionsList()
+        {
+            Response response = new Response();
+            Dal dal = new Dal();
+            SqlConnection connection = new SqlConnection(_connectionString);
+            response = dal.showTransectionsList(connection);
+            return response;
+        }
+
+        [HttpGet]
+        [Route("showTransection/{id}")]
+        public Response showTransection(int id)
+        {
+            Response response = new Response();
+            Dal dal = new Dal();
+            SqlConnection connection = new SqlConnection(_connectionString);
+            response = dal.showTransectionById(id, connection);
+            return response;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         //[HttpGet]
         //[Route("GetUsers")]
         //public List<Users> GetUsers()
