@@ -11,7 +11,7 @@ import './Sidebar.css';
 
 export default function Sidebar() {
   return (
-    <Drawer variant="permanent" sx={{position:'fixed' ,height: '100vh', width: 240,[`& .MuiDrawer-paper`]: { width: 240, boxSizing: 'border-box', backgroundColor: '#1F2130' } }}>
+    <Drawer variant="permanent" sx={{position:'fixed' ,height: '100vh', width:215,[`& .MuiDrawer-paper`]: { width: 215, boxSizing: 'border-box', backgroundColor: '#1F2130' } }}>
       <List>
 
         <Link to={'/'} className='mylinks'><ListItem button style={{display:"flex",flexDirection:"row", marginTop:"-10px"}}>
