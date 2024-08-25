@@ -1,10 +1,11 @@
 import React from 'react'
 import Layout from '../Components/Layout/Layout'
+import SampleProfile from '../Components/UserProfile'
 
 export default function UserProfile() {
   return (
     <Layout>
-      <h1>UserProfile Page</h1>
+      <SampleProfile/>
     </Layout>
   )
 }
