@@ -3,30 +3,8 @@
   margin: 0px;
 }
 
-.navigation-box{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-top: 10px;
-  font-size: 19px;
-}
-
-.navigation-menu{
-  list-style: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.navigation-menu li{
-  margin: 0px 20px;    /* topbottom leftright*/
-}
-
-.navigation-menu li a{
-  
-  text-decoration: none;
+InputBase::placeholder{
   color: white;
-  font-family:serif;
 }
 
 .navigation-menu li a:hover{
