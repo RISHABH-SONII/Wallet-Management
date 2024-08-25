@@ -8,11 +8,14 @@ import Notifications from './Pages/Notifications';
 import Settings from './Pages/Settings';
 import PageNotFound from './Pages/Notifications'
 import Support from './Pages/Support';
+import SampleProfile from './Components/UserProfile';
+import Login from './Pages/Login';
 function App() {
   return (
     <div className='App'>
     <BrowserRouter>
     <Routes>
+      <Route path='/login' element={<Login/>}/>
         <Route path='/' element={ <HomePage/> }/>
         <Route path='/userProfile' element={ <UserProfile/> }/>
         <Route path='/wallet' element={ <Wallet/> }/>
