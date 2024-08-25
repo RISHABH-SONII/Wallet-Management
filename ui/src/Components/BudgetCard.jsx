@@ -1,74 +1,66 @@
-import { faBus, faGraduationCap, faLeaf, faPaw, faTshirt } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
-import { Card, ProgressBar } from 'react-bootstrap'
+import React from 'react';
+import { Card, CardContent, Typography, List, ListItem, ListItemText, ListItemIcon, LinearProgress, Box } from '@mui/material';
+import { Checkroom as CheckroomIcon, DirectionsCar, Pets, School, ShoppingBag } from '@mui/icons-material';
 import './BudgetCard.css';
 
-export default function   
-() {
+export default function BudgetCard() {
+  const budgets = [
+    { name: 'Grocery Stores', value: 75, total: 100, color: '#4CAF50', icon: <ShoppingBag /> },
+    { name: 'Transportation', value: 25, total: 100, color: '#03A9F4', icon: <DirectionsCar /> },
+    { name: 'Pets', value: 50, total: 100, color: '#00BCD4', icon: <Pets /> },
+    { name: 'Education', value: 45, total: 100, color: '#673AB7', icon: <School /> },
+    { name: 'Clothes', value: 35, total: 100, color: '#9C27B0', icon: <CheckroomIcon/> },
+  ];
+
   return (
-    <div className='budgetCarddiv'>
-        <Card className="budgetCard">
-            <Card.Body>
-              <Card.Title className='title'>Monthly Budgets</Card.Title>
-              <div className="listWrapper">
-              <div className="budget-item">
-                <FontAwesomeIcon icon={faLeaf} className="icon" />
-                <span>Grocery Stores</span>
-                <ProgressBar className='progressBar' now={75} max={100} label="75/100" />
-              </div>
-
-              <div className="budget-item">
-                <FontAwesomeIcon icon={faBus} className="icon" />
-                <span>Transportation</span>
-                <ProgressBar className='progressBar' now={25} max={100} label="25/100" />
-              </div>
-
-              <div className="budget-item">
-                <FontAwesomeIcon icon={faPaw} className="icon" />
-                <span>Pets</span>
-                <ProgressBar className='progressBar' now={50} max={100} label="50/100" />
-              </div>
-              <div className="budget-item">
-                <FontAwesomeIcon icon={faGraduationCap} className="icon" />
-                <span>Education</span>
-                <ProgressBar className='progressBar' now={45} max={100} label="45/100" />
-              </div>
-              <div className="budget-item">
-                <FontAwesomeIcon icon={faTshirt} className="icon" />
-                <span>Clothes</span>
-                <ProgressBar className='progressBar' now={35} max={100} label="35/100" />
-              </div>
-              <div className="budget-item">
-                <FontAwesomeIcon icon={faLeaf} className="icon" />
-                <span>Grocery Stores</span>
-                <ProgressBar className='progressBar' now={75} max={100} label="75/100" />
-              </div>
-
-              <div className="budget-item">
-                <FontAwesomeIcon icon={faBus} className="icon" />
-                <span>Transportation</span>
-                <ProgressBar className='progressBar' now={25} max={100} label="25/100" />
-              </div>
-
-              <div className="budget-item">
-                <FontAwesomeIcon icon={faPaw} className="icon" />
-                <span>Pets</span>
-                <ProgressBar className='progressBar' now={50} max={100} label="50/100" />
-              </div>
-              <div className="budget-item">
-                <FontAwesomeIcon icon={faGraduationCap} className="icon" />
-                <span>Education</span>
-                <ProgressBar className='progressBar' now={45} max={100} label="45/100" />
-              </div>
-              <div className="budget-item">
-                <FontAwesomeIcon icon={faTshirt} className="icon" />
-                <span>Clothes</span>
-                <ProgressBar className='progressBar' now={35} max={100} label="35/100" />
-              </div>
-              </div>
-            </Card.Body>
-          </Card>
-    </div>
-  )
+    <Card className='budgetCard' sx={{ backgroundColor: '#1F2130', borderRadius: 2, color: '#fff',height:"100%" }}>
+      <CardContent>
+        <Typography variant="h6" component="div" sx={{ marginBottom: 2 }}>
+          Monthly Budgets
+        </Typography>
+        <List className='listWrapper' style={{marginLeft: "-10px"}}>
+          {budgets.map((budget, index) => (
+            <ListItem key={index} sx={{ paddingY: 1 }}>
+              <ListItemIcon sx={{ color: budget.color }}>
+                {budget.icon}
+              </ListItemIcon>
+              <Box sx={{ flexGrow: 1 }} style={{marginLeft: "-10px"}}>
+                <ListItemText style={{display:"flex", alignItems:"center", justifyContent:"space-between"}}
+                  primary={
+                    <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                      {budget.name}
+                    </Typography>
+                  }
+                  secondary={
+                    <Box style={{marginRight: "10px", display:"flex", alignItems:"center"}} >
+                      <Typography variant="body2" sx={{ fontWeight: 'bold', marginRight: 1 }}>
+                        {budget.value}
+                      </Typography>
+                      <Typography variant="body2" sx={{ color: '#9E9E9E' }}>
+                        / {budget.total}
+                      </Typography>
+                    </Box>
+                  }
+                />
+                <Box mt={1} style={{marginRight:"10px"}}>
+                  <LinearProgress
+                    variant="determinate"
+                    value={(budget.value / budget.total) * 100}
+                    sx={{
+                      height: 8,
+                      borderRadius: 5,
+                      backgroundColor: '#424242',
+                      '& .MuiLinearProgress-barColorPrimary': {
+                        backgroundColor: budget.color,
+                      },
+                    }}
+                  />
+                </Box>
+              </Box>
+            </ListItem>
+          ))}
+        </List>
+      </CardContent>
+    </Card>
+  );
 }
