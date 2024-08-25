@@ -1,11 +1,18 @@
-﻿using System.Data;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.IdentityModel.Tokens;
+using System.Data;
 using System.Data.SqlClient;
+using System.IdentityModel.Tokens.Jwt;
 using System.Reflection.Metadata.Ecma335;
+using System.Security.Claims;
+using System.Security.Principal;
+using System.Text;
 
 namespace Backend.Models
 {
     public class Dal
     {
+
         public Response register(Users newUser, SqlConnection connection)
         {
             Response response = new Response();
@@ -32,6 +39,7 @@ namespace Backend.Models
             {
                 response.StatusCode = 200;
                 response.StatusMessage = "User registered succesfully";
+                response.user = newUser;
             }
             else
             {
@@ -40,27 +48,40 @@ namespace Backend.Models
             }
             return response;
         }
-        public Response login(Users Users, SqlConnection connection)
+        public Response login(Users user, SqlConnection connection)
         {
             Response response = new Response();
             SqlCommand command = connection.CreateCommand();
-            command.CommandText = "SELECT * FROM Users WHERE UserID = @UserID and Password = @UserPassword";
-            command.Parameters.AddWithValue("@UserID", Users.UserId);
-            command.Parameters.AddWithValue("UserPassword", Users.Password);
+            command.CommandText = "SELECT * FROM Users WHERE Email = @EmailID and Password = @UserPassword";
+            command.Parameters.AddWithValue("@EmailID", user.Email);
+            command.Parameters.AddWithValue("@UserPassword", user.Password);
 
             SqlDataAdapter adapter = new SqlDataAdapter(command);
             DataTable dataTable = new DataTable();
             adapter.Fill(dataTable);
-            Users User = new Users();
-            if(dataTable.Rows.Count > 0)
+
+            if (dataTable.Rows.Count > 0)
             {
-                User.UserId = Convert.ToInt32(dataTable.Rows[0]["UserID"]);
-                User.FirstName = Convert.ToString(dataTable.Rows[0]["FirstName"]);
-                User.LastName = Convert.ToString(dataTable.Rows[0]["LastName"]);
-                User.Email = Convert.ToString(dataTable.Rows[0]["Email"]);
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes("sE9k3q8Mgk3J3cI7vK7pFJ4YsK+Jg8W8M7E8gL1Jd3A=");
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
+                new Claim(ClaimTypes.Name, user.Email)
+
+                        // Consider adding more claims here if needed
+                    }),
+                    Expires = DateTime.UtcNow.AddHours(1),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                };
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                var tokenString = tokenHandler.WriteToken(token);
+
                 response.StatusCode = 200;
                 response.StatusMessage = "User Is Valid";
-                response.user = User;
+                response.user = user;
+                response.Token = tokenString; // Include the token in the response
             }
             else
             {
@@ -70,6 +91,7 @@ namespace Backend.Models
             }
             return response;
         }
+
         public Response viewUser(Users Users, SqlConnection connection) 
         {
             Response response = new Response();
@@ -495,12 +517,12 @@ namespace Backend.Models
             }
             return response;
         }
-        public Response showWalletById(int walletId, SqlConnection connection)
+        public Response showWalletById(int providedUserId, SqlConnection connection)
         {
             Response response = new Response();
             SqlCommand command = connection.CreateCommand();
-            command.CommandText = @"Select * from Wallets where WalletID = @WalletID;";
-            command.Parameters.AddWithValue("@WalletID", walletId);
+            command.CommandText = @"Select * from Wallets where UserId = @UserID;";
+            command.Parameters.AddWithValue("@UserID", providedUserId);
 
             connection.Open();
             SqlDataReader reader = command.ExecuteReader();
