@@ -1,35 +1,162 @@
-import React from 'react';
-import { AppBar, Toolbar, IconButton, Typography, InputBase, Badge, Box } from '@mui/material';
-import { Search as SearchIcon, Notifications as NotificationsIcon, AccountCircle } from '@mui/icons-material';
+import React from "react";
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  InputBase,
+  Badge,
+  Box,
+} from "@mui/material";
+import {
+  Search as SearchIcon,
+  Notifications as NotificationsIcon,
+  AccountCircle,
+} from "@mui/icons-material";
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import { Link } from "react-router-dom";
+// import './Header.css';
 
 export default function Header() {
-    return (
-        <AppBar position="static" sx={{ backgroundColor: '#1F2130', mb:"2px"}}>
-            <Toolbar sx={{ left: -10 }}>
-                <Typography variant="button" noWrap component="div" sx={{ width: '240px' }}>
-                    {/* Empty Typography for layout */}
-                </Typography>
-                <Box sx={{ paddingLeft: "6.2rem", width: "95%", display: "flex" }}>
-                    <Box sx={{ padding: "0.15rem", borderRadius: '4px', backgroundColor: "#2E3047", marginRight: "315px" }}>
-                        <InputBase placeholder="Search Here" inputProps={{ 'aria-label': 'search' }} sx={{ width: '680px' }} />
-                        <IconButton>
-                            <SearchIcon sx={{ color: '#fff' }} />
-                        </IconButton>
-                    </Box>
-                    <IconButton color="inherit">
-                        <Badge badgeContent={4} color="error">
-                            <NotificationsIcon />
-                        </Badge>
-                    </IconButton>
-                    <IconButton color="inherit">
-                        <AccountCircle />
-                    </IconButton>
-                </Box>
-            </Toolbar>
-        </AppBar>
-    );
-}
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const userData = JSON.parse(localStorage.getItem("userData"));
 
+  return (
+    <AppBar
+      position="static"
+      sx={{
+        borderBottom: "3px solid white",
+        backgroundColor: "#1F2130",
+        width: "100%",
+      }}
+    >
+      <Toolbar sx={{ left: -20 }}>
+        <Typography
+          variant="button"
+          noWrap
+          component="div"
+          sx={{ width: "240px" }}
+        >
+          {/* Empty Typography for layout */}
+        </Typography>
+        <Box sx={{ paddingLeft: "6.2rem", width: "95%", display: "flex" }}>
+          <Box
+            sx={{
+              padding: "0.15rem",
+              borderRadius: "4px",
+              backgroundColor: "#2E3047",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <InputBase
+              placeholder="Search Here"
+              inputProps={{ "aria-label": "search" }}
+              sx={{
+                padding: "5px",
+                width: "680px",
+                color: "white",
+                "& input::placeholder": {
+                  color: "lightgray", // Placeholder text color
+                },
+              }}
+            />
+
+            <IconButton>
+              <SearchIcon sx={{ color: "#fff" }} />
+            </IconButton>
+          </Box>
+          <IconButton color="inherit">
+            <Badge badgeContent={4} color="error">
+              <NotificationsIcon />
+            </Badge>
+          </IconButton>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+          >
+            <MenuItem>{userData.email}</MenuItem>
+            <MenuItem onClick={handleClose}>
+              <Link
+                to={"/userProfile"}
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                Profile
+              </Link>
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                localStorage.removeItem("userId");
+                handleClose();
+              }}
+            >
+              <Link
+                to={"/login"}
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                Logout
+              </Link>
+            </MenuItem>
+          </Menu>
+          <IconButton color="inherit">
+            <div>
+              <Button id="basic-button" onClick={handleClick}>
+                <AccountCircle />
+              </Button>
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                  "aria-labelledby": "basic-button",
+                }}
+              >
+                <MenuItem>{userData.email}</MenuItem>
+                <MenuItem onClick={handleClose}>
+                  <Link
+                    to={"/userProfile"}
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
+                    Profile
+                  </Link>
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    sessionStorage.removeItem("authToken");
+                    handleClose();
+                  }}
+                >
+                  <Link
+                    to={"/login"}
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
+                    Logout
+                  </Link>
+                </MenuItem>
+              </Menu>
+            </div>
+          </IconButton>
+        </Box>
+      </Toolbar>
+    </AppBar>
+  );
+}
 
 // import React from 'react';
 // import { AppBar, Toolbar, IconButton, Typography, InputBase, Badge, Container, Box, Button } from '@mui/material';
@@ -37,10 +164,10 @@ export default function Header() {
 
 // export default function Header() {
 //     return (
-//             <AppBar position="static" sx={{backgroundColor: '#1F2130'}}>
+//             <AppBar position="fixed" sx={{backgroundColor: '#1F2130'}}>
 //               <Toolbar sx={{left:-10}}>
 //                 <Typography variant="button" noWrap component="div" style={{width: '240px'}}>
-                    
+
 //                 </Typography>
 //                 {/* , backgroundColor: '#2E3047' */}
 //                 {/* ,marginLeft:"87px", marginRight: '16px',width:"65rem" */}
@@ -64,7 +191,6 @@ export default function Header() {
 //             </AppBar>
 //           );
 // }
-
 
 // import React from 'react';
 // import { AppBar, Toolbar, IconButton, Typography, InputBase, Badge } from '@mui/material';
@@ -95,8 +221,6 @@ export default function Header() {
 //     </AppBar>
 //   );
 // }
-
-
 
 // import { faBell, faChartLine, faCog, faHome, faSearch, faUser, faWallet } from '@fortawesome/free-solid-svg-icons'
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -141,21 +265,20 @@ export default function Header() {
 //             </Box>
 //     )
 
-
 //     return (
 //         <>
 //         <Box>
 //             <AppBar component={'nav'} sx={{bgcolor:"#071435"}}>
 //                 <Toolbar>
-//                     <IconButton 
-//                         color='inherit' 
-//                         aria-label='open drawer' 
-//                         edge='start' 
+//                     <IconButton
+//                         color='inherit'
+//                         aria-label='open drawer'
+//                         edge='start'
 //                         sx={{
 //                             mr:2,
 //                             display:{sm:"none"}
 //                         }}
-                        
+
 //                         onClick={handleDrawerToggle}
 //                         >
 //                         <MenuIcon/>
@@ -189,10 +312,10 @@ export default function Header() {
 //                 </Toolbar>
 //             </AppBar>
 //             <Box component="nav" sx={{bgcolor:"#071435"}}>
-//                 <Drawer 
-//                     variant='temporary' 
-//                     open={mobileOpen} 
-//                     onClose={handleDrawerToggle} 
+//                 <Drawer
+//                     variant='temporary'
+//                     open={mobileOpen}
+//                     onClose={handleDrawerToggle}
 //                     sx={{display:{xs:'block',sm:'none'},
 //                     "& .MuiDrawer-paper":{
 //                         boxSizing:"border-box",
