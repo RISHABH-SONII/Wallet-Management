@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Backend.Models
@@ -15,6 +18,7 @@ namespace Backend.Models
         public Wallets wallet { get; set; }
         public List<Transections> listTransections { get; set; }
         public Transections transections { get; set; }
+        public string Token { get; set; }
 
     }
 }
