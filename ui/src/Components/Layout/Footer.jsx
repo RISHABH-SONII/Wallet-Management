@@ -5,6 +5,7 @@ import { Facebook as FacebookIcon, Instagram as InstagramIcon, Twitter as Twitte
 export default function Footer() {
     return (
         <Box sx={{ 
+            borderTop:"3px solid white",
             position: "static", 
             textAlign: "center", 
             bgcolor: "#1F2130", 
