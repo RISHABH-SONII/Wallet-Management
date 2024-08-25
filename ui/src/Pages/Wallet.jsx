@@ -1,10 +1,11 @@
 import React from 'react'
 import Layout from '../Components/Layout/Layout'
+import WalletComponent from '../Components/WalletComponent'
 
 export default function Wallet() {
   return (
     <Layout>
-      <h1>Wallet Page</h1>
+      <WalletComponent/>
     </Layout>
   )
 }
