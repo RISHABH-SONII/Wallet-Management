@@ -1,30 +1,104 @@
-import React from 'react';
-import { Grid, Typography, Box, Container } from '@mui/material';
-import CardComponent from './CardComponent';
-import ChartComponent from './ChartComponent';
+import React from "react";
+import { Grid, Typography, Box, Container } from "@mui/material";
+import CardComponent from "./CardComponent";
+import ChartComponent from "./ChartComponent";
+import BudgetCard from "./BudgetCard";
+import IncomeExpensesCard from "./IncomeExpanseCard";
+import TransactionCard from "./TransectionCard";
+import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 
 export default function DashboardComponent() {
   return (
-    <Container maxWidth="lg" sx={{ mt:'25px' }}>
-    <Box sx={{ flexGrow: 1,pl:3,pr:3, backgroundColor: '#14172B', color: '#fff' }}>
-      <Typography variant="h4" gutterBottom>
-        Dashboard
-      </Typography>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={3}>
-          <CardComponent title="Total Balance" value="$432,568" subtitle="2.47% Last month $24,478" />
+    <Container sx={{ mt: "45px" }}>
+      <Box
+        sx={{
+          flexGrow: 1,
+          pl: 3,
+          pr: 3,
+          backgroundColor: "#14172B",
+          color: "#fff",
+        }}
+      >
+        <Box
+          sx={{
+            pb: 5,
+            color: "lightblue",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "start",
+            }}
+          >
+            <Typography variant="h5" gutterBottom>
+              Dashboard
+            </Typography>
+            <small style={{ marginTop: "-5px" }}>
+              Welcome To E-Cash Finance Management
+            </small>
+          </Box>
+          <Typography variant="subtitle1" gutterBottom>
+            Home <KeyboardDoubleArrowRightIcon /> Dashboard
+          </Typography>
+        </Box>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={3}>
+            <CardComponent
+              title="Total Balance"
+              value="$432,568"
+              subtitle="2.47% Last month $24,478"
+            />
+          </Grid>
+          <Grid item xs={12} md={3}>
+            <CardComponent
+              title="Total Balance"
+              value="$432,568"
+              subtitle="2.47% Last month $24,478"
+            />
+          </Grid>
+          <Grid item xs={12} md={3}>
+            <CardComponent
+              title="Total Balance"
+              value="$432,568"
+              subtitle="2.47% Last month $24,478"
+            />
+          </Grid>
+          <Grid item xs={12} md={3}>
+            <CardComponent
+              title="Total Balance"
+              value="$432,568"
+              subtitle="2.47% Last month $24,478"
+            />
+          </Grid>
+          {/* Repeat for other cards */}
         </Grid>
-        {/* Repeat for other cards */}
-      </Grid>
-      <Grid container spacing={3} sx={{ mt: 3 }}>
-        <Grid item xs={12} md={8}>
-          <ChartComponent />
+
+        <Grid container spacing={3} sx={{ mt: 3 }}>
+          <Grid item xs={12}>
+            <ChartComponent />
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={4}>
-          <CardComponent title="Monthly Expenses Breakdown" content="Breakdown here" />
+
+        <Grid container spacing={3} sx={{ mt: 3 }}>
+          <Grid item xs={12} md={4}>
+            <BudgetCard />
+          </Grid>
+          <Grid item xs={12} md={8}>
+            <IncomeExpensesCard />
+          </Grid>
         </Grid>
-      </Grid>
-    </Box>
+
+        <Grid container spacing={3} sx={{ mt: 3, mb: 3 }}>
+          <Grid item xs={12}>
+            <TransactionCard />
+          </Grid>
+        </Grid>
+      </Box>
     </Container>
-  )
+  );
 }
