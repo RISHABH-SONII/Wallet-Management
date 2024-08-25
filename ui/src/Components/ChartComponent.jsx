@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Card, CardContent, Typography } from '@mui/material';
+import './ChartComponent.css';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -23,6 +24,17 @@ ChartJS.register(
 );
 
 const ChartComponent = () => {
+  const [refresh, setRefresh] = useState(false);
+  console.log(refresh);
+
+  const handleMouseEnter = () => {
+    setRefresh((refresh) => !refresh); // Toggle the state to trigger re-render
+  };
+
+  useEffect(() => {
+    console.log('Component has been refreshed due to state change.');
+  }, [refresh]);
+
   const data = {
     labels: ['January', 'February', 'March', 'April', 'May', 'June'],
     datasets: [
@@ -50,7 +62,7 @@ const ChartComponent = () => {
   };
 
   return (
-    <Card sx={{ backgroundColor: '#1F2130', color: '#ffffff' }}>
+    <Card className='chartCard' sx={{ backgroundColor: '#1F2130', color: '#ffffff' }} onMouseEnter={handleMouseEnter}>
       <CardContent>
         <Typography variant="h6" gutterBottom>
           Balance Trends
