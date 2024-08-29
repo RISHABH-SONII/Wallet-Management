@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import "./LoginComponent.css";
 import {
   Box,
   Button,
@@ -10,43 +11,59 @@ import {
   Link,
 } from "@mui/material";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import SignUpComponent from "./SignUpComponent";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function LoginComponent() {
-  const router = useNavigate();
-  const handleSubmit = async (eve) => {
-    eve.preventDefault();
-    console.log(eve.target[0].value);
-    console.log(eve.target[2].value);
-    const res = await axios
-      .post(
-        "https://localhost:7242/api/Users/login",
-        {
-          password: eve.target[2].value,
-          email: eve.target[0].value,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            accept: "text/plain",
-          },
+  let [loginFormData, setloginFormData] = useState({
+    email: "",
+    password: "",
+  });
+  let getvalue = (event) => {
+    let oldData = { ...loginFormData };
+    let inputName = event.target.name;
+    let inputValue = event.target.value;
+    oldData[inputName] = inputValue;
+    setloginFormData(oldData);
+  };
+  let handleSubmit = (event) => {
+    event.preventDefault();
+    let currentUserFormData = {
+      email: loginFormData.email,
+      password: loginFormData.password,
+    };
+    axios
+      .post("https://localhost:7242/api/Users/login", currentUserFormData)
+      .then((response) => response.data)
+      .then((finalresponse) => {
+        if (finalresponse.statusCode === 200) {
+          console.log(finalresponse.user);
+          localStorage.setItem("userData", JSON.stringify(finalresponse.user));
+          sessionStorage.setItem("authToken", finalresponse.token);
+          router("/"); // redirect to the dashboard page
         }
-      )
-      .then((e) => e);
-    if (res.data.statusCode === 200) {
-      localStorage.setItem("userData", JSON.stringify(res.data.user));
-      sessionStorage.setItem("authToken", res.data.token);
-      router("/");
-    }
+        if (finalresponse.statusCode === 100) {
+          toast.error(finalresponse.statusMessage);
+        }
+      });
+  };
+  const router = useNavigate();
+  const handleSignUpClick = (eve) => {
+    eve.preventDefault();
+    console.log("function called");
+    router("/signup"); // Redirect to the signup page
   };
   return (
     <Grid container style={{ minHeight: "100vh", backgroundColor: "#1b1a2f" }}>
+      <ToastContainer />
       <Grid
         item
         xs={12}
         md={6}
         style={{
-          backgroundImage: "url(your-image-url)",
+          backgroundImage: "url()",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -60,22 +77,41 @@ export default function LoginComponent() {
           color="white"
           p={4}
         >
-          <img
-            src="your-logo-url"
-            alt="Logo"
-            style={{ marginBottom: "20px" }}
-          />
-          <Typography variant="h4" gutterBottom>
-            Welcome to Ekash
+          <Box className="appLogo" sx={{ marginBottom: "20px" }}>
+            <img
+              src="logo1.png"
+              alt="Logo"
+              style={{
+                height: "100px",
+                width: "100px",
+                borderRadius: "50%",
+                boxShadow: "0px 0px 10px 2px lightblue",
+              }}
+            />
+          </Box>
+          <Typography
+            sx={{
+              fontFamily: "serif",
+              fontStyle: "oblique",
+              color: "lightblue",
+            }}
+            variant="h4"
+            gutterBottom
+          >
+            Welcome To E-Cash Wallet Management
           </Typography>
           <Box mt={2}>{/* Add your social media icons here */}</Box>
           <Box mt={2}>
-            <Typography variant="body2">
-              Have an issue with 2-factor authentication?
+            <Typography
+              sx={{
+                fontFamily: "serif",
+                marginTop: "-35px",
+                color: "lightblue",
+              }}
+              variant="body2"
+            >
+              A small approach to manage the wallets
             </Typography>
-            <Link href="#" color="inherit" variant="body2">
-              Privacy Policy
-            </Link>
           </Box>
         </Box>
       </Grid>
@@ -104,6 +140,7 @@ export default function LoginComponent() {
               label="Email"
               type="email"
               required
+              onChange={getvalue}
             />
             <TextField
               variant="outlined"
@@ -113,14 +150,8 @@ export default function LoginComponent() {
               name="password"
               type="text"
               required
+              onChange={getvalue}
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Link href="#" variant="body2" style={{ float: "right" }}>
-              Forgot Password?
-            </Link>
             <Button
               type="submit"
               fullWidth
@@ -131,7 +162,7 @@ export default function LoginComponent() {
               Sign In
             </Button>
             <Box mt={2} textAlign="center">
-              <Link href="#" variant="body2">
+              <Link href="#" onClick={handleSignUpClick} variant="body2">
                 Don't have an account? Sign up
               </Link>
             </Box>
