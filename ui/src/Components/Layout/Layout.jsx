@@ -8,9 +8,9 @@ import { useNavigate } from "react-router-dom";
 const Layout = ({ children }) => {
   const router = useNavigate();
   useEffect(() => {
-    const userId = sessionStorage.getItem("authToken");
-    console.log(userId);
-    if (!userId) {
+    const userIdToken = sessionStorage.getItem("authToken");
+    console.log(userIdToken);
+    if (!userIdToken) {
       router("/login");
     }
   }, []);
