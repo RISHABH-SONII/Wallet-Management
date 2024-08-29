@@ -40,13 +40,13 @@ namespace Backend.Controllers
         }
 
         [HttpPost]
-        [Route("viewUser")]
-        public Response viewUser(Users users)
+        [Route("viewUser/{id}")]
+        public Response viewUser(int id)
         {
             Response response = new Response();
             Dal dal = new Dal();
             SqlConnection connection = new SqlConnection(_connectionString);
-            response = dal.viewUser(users, connection);
+            response = dal.viewUser(id, connection);
             return response;
         }
 
@@ -95,13 +95,13 @@ namespace Backend.Controllers
         }
 
         [HttpPost]
-        [Route("deleteWallet")]
-        public Response deleteWallet(Wallets wallets)
+        [Route("deleteWallet/{id}")]
+        public Response deleteWallet(int id)
         {
             Response response = new Response();
             Dal dal = new Dal();
             SqlConnection connection = new SqlConnection(_connectionString);
-            response = dal.deleteWallet(wallets, connection);
+            response = dal.deleteWalletByID(id, connection);
             return response;
         }
 
@@ -163,14 +163,14 @@ namespace Backend.Controllers
         }
 
         [HttpGet]
-        [Route("showWalletsList")]
+        [Route("showWalletsList/{id}")]
 
-        public Response showWalletsList()
+        public Response showWalletsList(int id)
         {
             Response response = new Response();
             Dal dal = new Dal();
             SqlConnection connection = new SqlConnection(_connectionString);
-            response = dal.showWalletsList(connection);
+            response = dal.showWalletsList(id,connection);
             return response;
         }
 
