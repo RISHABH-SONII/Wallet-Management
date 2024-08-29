@@ -31,21 +31,26 @@ namespace Backend.Models
             command.Parameters.AddWithValue("@UpdatedAt", DateTime.Now);
 
             connection.Open();
+            try { 
             int i = Convert.ToInt32(command.ExecuteScalar());
             newUser.UserId = i;
+                if (i > 0)
+                {
+                    response.StatusCode = 200;
+                    response.StatusMessage = "User registered succesfully";
+                    response.user = newUser;
+                }
+                else
+                {
+                    response.StatusCode = 100;
+                    response.StatusMessage = "User registration failed";
+                }
+            }
+            catch { 
+            response.StatusCode = 100;
+            response.StatusMessage = "Email address is already exists. Use another";
+            }
             connection.Close();
-
-            if (i > 0)
-            {
-                response.StatusCode = 200;
-                response.StatusMessage = "User registered succesfully";
-                response.user = newUser;
-            }
-            else
-            {
-                response.StatusCode = 100;
-                response.StatusMessage = "User registration failed";
-            }
             return response;
         }
         public Response login(Users user, SqlConnection connection)
@@ -55,74 +60,83 @@ namespace Backend.Models
             command.CommandText = "SELECT * FROM Users WHERE Email = @EmailID and Password = @UserPassword";
             command.Parameters.AddWithValue("@EmailID", user.Email);
             command.Parameters.AddWithValue("@UserPassword", user.Password);
-
-            SqlDataAdapter adapter = new SqlDataAdapter(command);
-            DataTable dataTable = new DataTable();
-            adapter.Fill(dataTable);
-
-            if (dataTable.Rows.Count > 0)
+            connection.Open();
+            using (SqlDataReader reader = command.ExecuteReader())
             {
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes("sE9k3q8Mgk3J3cI7vK7pFJ4YsK+Jg8W8M7E8gL1Jd3A=");
-                var tokenDescriptor = new SecurityTokenDescriptor
+                if (reader.Read())
                 {
-                    Subject = new ClaimsIdentity(new Claim[]
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var key = Encoding.ASCII.GetBytes("sE9k3q8Mgk3J3cI7vK7pFJ4YsK+Jg8W8M7E8gL1Jd3A=");
+                    var tokenDescriptor = new SecurityTokenDescriptor
                     {
+                        Subject = new ClaimsIdentity(new Claim[]
+                        {
                 new Claim(ClaimTypes.Name, user.Email)
 
-                        // Consider adding more claims here if needed
-                    }),
-                    Expires = DateTime.UtcNow.AddHours(1),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-                };
-                var token = tokenHandler.CreateToken(tokenDescriptor);
-                var tokenString = tokenHandler.WriteToken(token);
+                            // Consider adding more claims here if needed
+                        }),
+                        Expires = DateTime.UtcNow.AddHours(1),
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                    };
+                    var token = tokenHandler.CreateToken(tokenDescriptor);
+                    var tokenString = tokenHandler.WriteToken(token);
 
-                response.StatusCode = 200;
-                response.StatusMessage = "User Is Valid";
-                response.user = user;
-                response.Token = tokenString; // Include the token in the response
+                    Users users = new Users();
+                    users.UserId = (int)reader["UserID"];
+                    users.FirstName = (string)reader["FirstName"];
+                    users.LastName = (string)reader["LastName"];
+                    users.Password = (string)reader["Password"];
+                    users.Email = (string)reader["Email"];
+                    users.CreatedAt = (DateTime)reader["CreatedAt"];
+                    users.UpdatedAt = (DateTime)reader["UpdatedAt"];
+
+                    response.StatusCode = 200;
+                    response.StatusMessage = "User Is Valid";
+                    response.user = users;
+                    response.Token = tokenString;
+                }
+                else
+                {
+                    response.StatusCode = 100;
+                    response.StatusMessage = "User is Invalid";
+                    response.user = null;
+                }
             }
-            else
-            {
-                response.StatusCode = 100;
-                response.StatusMessage = "User is Invalid";
-                response.user = null;
-            }
+            connection.Close();
             return response;
         }
 
-        public Response viewUser(Users Users, SqlConnection connection) 
+        public Response viewUser(int id, SqlConnection connection) 
         {
             Response response = new Response();
             SqlCommand command = connection.CreateCommand();
             command.CommandText = "select * from Users where UserID = @UserId";
-            command.Parameters.AddWithValue("@UserId",Users.UserId);
-
-            SqlDataAdapter adapter = new SqlDataAdapter(command);
-            DataTable dataTable = new DataTable();
-            adapter.Fill(dataTable);
-
-            Users User = new Users();
-            if (dataTable.Rows.Count > 0)
+            command.Parameters.AddWithValue("@UserId",id);
+            connection.Open();
+            using(SqlDataReader reader =  command.ExecuteReader()) 
             {
-                User.UserId = Convert.ToInt32(dataTable.Rows[0]["UserID"]);
-                User.FirstName = Convert.ToString(dataTable.Rows[0]["FirstName"]);
-                User.LastName = Convert.ToString(dataTable.Rows[0]["LastName"]);
-                User.Password = Convert.ToString(dataTable.Rows[0]["Password"]);
-                User.Email = Convert.ToString(dataTable.Rows[0]["Email"]);
-                User.CreatedAt = Convert.ToDateTime(dataTable.Rows[0]["CreatedAt"]);
-                User.UpdatedAt = Convert.ToDateTime(dataTable.Rows[0]["UpdatedAt"]);
-                response.StatusCode = 200;
-                response.StatusMessage = "User exists";
-                response.user = User;
+                Users User = new Users();
+                if (reader.Read())
+                {
+                    User.UserId = Convert.ToInt32(reader["UserID"]);
+                    User.FirstName = Convert.ToString(reader["FirstName"]);
+                    User.LastName = Convert.ToString(reader["LastName"]);
+                    User.Password = Convert.ToString(reader["Password"]);
+                    User.Email = Convert.ToString(reader["Email"]);
+                    User.CreatedAt = Convert.ToDateTime(reader["CreatedAt"]);
+                    User.UpdatedAt = Convert.ToDateTime(reader["UpdatedAt"]);
+                    response.StatusCode = 200;
+                    response.StatusMessage = "User exists";
+                    response.user = User;
+                }
+                else
+                {
+                    response.StatusCode = 100;
+                    response.StatusMessage = "User does not exists";
+                    response.user = null;
+                }
             }
-            else
-            {
-                response.StatusCode = 100;
-                response.StatusMessage = "User does not exists";
-                response.user = null;
-            }
+            connection.Close();
             return response;
         }
         public Response editUser(Users users,SqlConnection connection)
@@ -156,35 +170,39 @@ namespace Backend.Models
         public Response addWallet(Wallets wallets, SqlConnection connection)
         {
             Response response = new Response();
-            SqlCommand command = connection.CreateCommand();
-            command.CommandText = @"
+            try
+            {
+                SqlCommand command = connection.CreateCommand();
+                command.CommandText = @"
                         INSERT INTO Wallets (UserID, Name, Type, InitialBalance, CreatedAt, UpdatedAt)
                         VALUES (@UserID, @Name, @Type, @InitialBalance, @CreatedAt, @UpdatedAt);
                         SELECT SCOPE_IDENTITY();";
 
 
-            command.Parameters.AddWithValue("@UserID", wallets.UserID);
-            command.Parameters.AddWithValue("@Name", wallets.Name);
-            command.Parameters.AddWithValue("@Type", wallets.Type);
-            command.Parameters.AddWithValue("@InitialBalance", wallets.InitialBalance);
-            command.Parameters.AddWithValue("@CreatedAt", DateTime.Now);
-            command.Parameters.AddWithValue("@UpdatedAt", DateTime.Now);
+                command.Parameters.AddWithValue("@UserID", wallets.UserID);
+                command.Parameters.AddWithValue("@Name", wallets.Name);
+                command.Parameters.AddWithValue("@Type", wallets.Type);
+                command.Parameters.AddWithValue("@InitialBalance", wallets.InitialBalance);
+                command.Parameters.AddWithValue("@CreatedAt", DateTime.Now);
+                command.Parameters.AddWithValue("@UpdatedAt", DateTime.Now);
 
-            connection.Open();
-            int i = Convert.ToInt32(command.ExecuteScalar());
-            wallets.WalletID = i;
-            connection.Close();
+                connection.Open();
+                int i = Convert.ToInt32(command.ExecuteScalar());
+                wallets.WalletID = i;
+                connection.Close();
 
-            if (i > 0)
-            {
-                response.StatusCode = 200;
-                response.StatusMessage = "New wallet created succesfully";
+                if (i > 0)
+                {
+                    response.StatusCode = 200;
+                    response.StatusMessage = "New wallet created succesfully";
+                }
             }
-            else
+            catch 
             {
-                response.StatusCode = 100;
-                response.StatusMessage = "Some error occured while creating new wallet. Try after sometime.";
+                    response.StatusCode = 100;
+                    response.StatusMessage = "This named wallet is already created";
             }
+            
             return response;
         }
         public Response viewWallet(Wallets wallets, SqlConnection connection)
@@ -224,8 +242,8 @@ namespace Backend.Models
         {
             Response response = new Response();
             SqlCommand command = connection.CreateCommand();
-            command.CommandText = @"UPDATE Wallets SET Name = @WalletName, Type = @WalletType, InitialBalance = @CurrentBalance, UpdatedAt = @UpdatedAt WHERE UserID = @UserID;";
-            command.Parameters.AddWithValue("@UserID", wallets.UserID);
+            command.CommandText = @"UPDATE Wallets SET Name = @WalletName, Type = @WalletType, InitialBalance = @CurrentBalance, UpdatedAt = @UpdatedAt WHERE WalletID = @walletID;";
+            command.Parameters.AddWithValue("@walletID", wallets.WalletID);
             command.Parameters.AddWithValue("@WalletName", wallets.Name);
             command.Parameters.AddWithValue("@WalletType", wallets.Type);
             command.Parameters.AddWithValue("@CurrentBalance", wallets.InitialBalance);
@@ -247,12 +265,12 @@ namespace Backend.Models
             }
             return response;
         }
-        public Response deleteWallet(Wallets wallets, SqlConnection connection)
+        public Response deleteWalletByID(int Walletid, SqlConnection connection)
         {
             Response response = new Response();
             SqlCommand command = connection.CreateCommand();
             command.CommandText = @"Delete from Wallets where WalletID = @WalletID;";
-            command.Parameters.AddWithValue("@WalletID", wallets.WalletID);
+            command.Parameters.AddWithValue("@WalletID", Walletid);
 
             connection.Open();
             int i = command.ExecuteNonQuery();
@@ -475,36 +493,34 @@ namespace Backend.Models
 
             return response;
         }
-        public Response showWalletsList(SqlConnection connection)
+        public Response showWalletsList(int id,SqlConnection connection)
         {
             Response response = new Response();
             SqlCommand command = connection.CreateCommand();
-            command.CommandText = "Select * from Wallets";
+            command.CommandText = @"Select * from Wallets Where UserID = @userId";
+            command.Parameters.AddWithValue("@userId", id);
 
             connection.Open();
-            SqlDataReader reader = command.ExecuteReader();
-
             List<Wallets> walletList = new List<Wallets>();
-
-            while (reader.Read())
-            {
-                Wallets wallet = new Wallets
+            SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    WalletID = Convert.ToInt32(reader["WalletID"]),
-                    UserID = Convert.ToInt32(reader["UserID"]),
-                    Name = Convert.ToString(reader["Name"]),
-                    Type = Convert.ToString(reader["Type"]),
-                    InitialBalance = Convert.ToDecimal(reader["InitialBalance"]),
-                    CreatedAt = Convert.ToDateTime(reader["CreatedAt"]),
-                    UpdatedAt = Convert.ToDateTime(reader["UpdatedAt"])
-            };
-
-                walletList.Add(wallet);
-            }
+                    Wallets wallet = new Wallets
+                    {
+                        WalletID = Convert.ToInt32(reader["WalletID"]),
+                        UserID = Convert.ToInt32(reader["UserID"]),
+                        Name = Convert.ToString(reader["Name"]),
+                        Type = Convert.ToString(reader["Type"]),
+                        InitialBalance = Convert.ToDecimal(reader["InitialBalance"]),
+                        CreatedAt = Convert.ToDateTime(reader["CreatedAt"]),
+                        UpdatedAt = Convert.ToDateTime(reader["UpdatedAt"])
+                    };
+                    walletList.Add(wallet);
+                }
 
             connection.Close();
 
-            if (walletList.Count > 0)
+            if (walletList.Count > 0 )
             {
                 response.StatusCode = 200;
                 response.StatusMessage = "Wallets Retrieved successfully";
@@ -517,12 +533,12 @@ namespace Backend.Models
             }
             return response;
         }
-        public Response showWalletById(int providedUserId, SqlConnection connection)
+        public Response showWalletById(int providedWalletId, SqlConnection connection)
         {
             Response response = new Response();
             SqlCommand command = connection.CreateCommand();
-            command.CommandText = @"Select * from Wallets where UserId = @UserID;";
-            command.Parameters.AddWithValue("@UserID", providedUserId);
+            command.CommandText = @"Select * from Wallets where WalletID = @walletID;";
+            command.Parameters.AddWithValue("@walletID", providedWalletId);
 
             connection.Open();
             SqlDataReader reader = command.ExecuteReader();
