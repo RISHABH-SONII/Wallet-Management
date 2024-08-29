@@ -1,10 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import {
-  AppBar,
-  Toolbar,
   Typography,
   Box,
-  IconButton,
   Card,
   CardContent,
   Grid,
@@ -15,11 +12,70 @@ import {
   ListItemText,
   Divider,
   Container,
+  Modal,
+  TextField,
 } from "@mui/material";
 import "./UserProfile.css";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
+import CloseIcon from "@mui/icons-material/Close";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function SampleProfile() {
+  const userData = JSON.parse(localStorage.getItem("userData"));
+  let [formdata, setformdata] = useState({
+    firstName: userData.firstName,
+    lastName: userData.lastName,
+    password: userData.password,
+    email: userData.email,
+  });
+
+  let getvalue = (event) => {
+    let oldData = { ...formdata };
+    let inputName = event.target.name;
+    let inputValue = event.target.value;
+    oldData[inputName] = inputValue;
+    setformdata(oldData);
+  };
+  let handleEditProfile = (event) => {
+    event.preventDefault();
+    setOpenForm(!openForm);
+  };
+
+  let handleSubmit = (event) => {
+    event.preventDefault();
+    let UpdatedFormData = {
+      userID: userData.userId,
+      firstName: formdata.firstName,
+      lastName: formdata.lastName,
+      password: formdata.password,
+      email: formdata.email,
+    };
+    axios
+      .post("https://localhost:7242/api/Users/editUser", UpdatedFormData)
+      .then((response) => response.data)
+      .then((finalresponse) => {
+        if (finalresponse.statusCode === 200) {
+          axios
+            .post(
+              `https://localhost:7242/api/Users/viewUser/${userData.userId}`
+            )
+            .then((responseTwo) => responseTwo.data)
+            .then((finalresponseTwo) => {
+              // console.log(finalresponseTwo.user);
+              // console.log(finalresponseTwo.statusMessage);
+              toast.success("User Profile Updated Successfully.");
+              localStorage.setItem(
+                "userData",
+                JSON.stringify(finalresponseTwo.user)
+              );
+            });
+        } else {
+          toast.error(finalresponse.statusMessage);
+        }
+      });
+  };
+
   const transactions = [
     { category: "Grocery Store", amount: "$50.00", date: "12/08/2024" },
     { category: "Online Subscription", amount: "$15.00", date: "11/08/2024" },
@@ -30,10 +86,101 @@ export default function SampleProfile() {
     { description: "Changed account password", date: "11/08/2024" },
   ];
 
-  const userData = JSON.parse(localStorage.getItem("userData"));
-
+  let [openForm, setOpenForm] = useState(false);
   return (
     <Container maxWidth="lg" sx={{ mt: "45px" }}>
+      <ToastContainer />
+      <Modal open={openForm} onClose={handleEditProfile}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            bgcolor: "transparent",
+            border: "0.1 px solid #000",
+            boxShadow: 24,
+            p: 2,
+            borderRadius: 5,
+          }}
+        >
+          <form
+            onSubmit={handleSubmit}
+            style={{
+              width: 400,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "20px",
+              backgroundColor: "#14172B",
+              padding: "20px",
+              borderRadius: "25px",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                marginLeft: "90px",
+              }}
+            >
+              <h4 style={{ marginRight: "10px", color: "blue" }}>
+                Register Yourself
+              </h4>
+              <Button
+                style={{ marginLeft: "10px" }}
+                onClick={handleEditProfile}
+              >
+                <CloseIcon />
+              </Button>
+            </Box>
+            <TextField
+              placeholder="FirstName*"
+              variant="outlined"
+              name="firstName"
+              value={formdata.firstName}
+              onChange={getvalue}
+              required
+              sx={{ input: { color: "#fff" }, label: { color: "#ccc" } }}
+            />
+            <TextField
+              placeholder="LastName*"
+              variant="outlined"
+              name="lastName"
+              value={formdata.lastName}
+              onChange={getvalue}
+              required
+              sx={{ input: { color: "#fff" }, label: { color: "#ccc" } }}
+            />
+            <TextField
+              placeholder="Email*"
+              variant="outlined"
+              name="email"
+              value={formdata.email}
+              onChange={getvalue}
+              required
+              sx={{ input: { color: "#fff" }, label: { color: "#ccc" } }}
+            />
+            <TextField
+              placeholder="Password*"
+              variant="outlined"
+              name="password"
+              value={formdata.password}
+              onChange={getvalue}
+              required
+              sx={{ input: { color: "#fff" }, label: { color: "#ccc" } }}
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              sx={{ mt: 2 }}
+            >
+              Register
+            </Button>
+          </form>
+        </Box>
+      </Modal>
       <Box
         sx={{
           flexGrow: 1,
@@ -102,7 +249,11 @@ export default function SampleProfile() {
                 </Box>
               </Box>
               <Box>
-                <Button variant="contained" sx={{ marginTop: "10px" }}>
+                <Button
+                  onClick={handleEditProfile}
+                  variant="contained"
+                  sx={{ marginTop: "10px" }}
+                >
                   Edit Profile
                 </Button>
               </Box>
