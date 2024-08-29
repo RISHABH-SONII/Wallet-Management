@@ -1,0 +1,15 @@
+* {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+}
+
+.appLogo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.appLogo:hover {
+  box-shadow: 0px 0px 10px 2px red;
+}
