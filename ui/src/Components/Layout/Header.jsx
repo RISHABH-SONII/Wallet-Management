@@ -39,7 +39,16 @@ export default function Header() {
         width: "100%",
       }}
     >
-      <Toolbar sx={{ left: -20 }}>
+      <Toolbar
+        sx={{
+          display: "flex",
+          justifyContent: "end",
+          width: "77%",
+          left: 315,
+          paddingLeft: 0,
+          paddingRight: 0,
+        }}
+      >
         <Typography
           variant="button"
           noWrap
@@ -48,73 +57,70 @@ export default function Header() {
         >
           {/* Empty Typography for layout */}
         </Typography>
-        <Box sx={{ paddingLeft: "6.2rem", width: "95%", display: "flex" }}>
-          <Box
-            sx={{
-              padding: "0.15rem",
-              borderRadius: "4px",
-              backgroundColor: "#2E3047",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <InputBase
-              placeholder="Search Here"
-              inputProps={{ "aria-label": "search" }}
-              sx={{
-                padding: "5px",
-                width: "680px",
-                color: "white",
-                "& input::placeholder": {
-                  color: "lightgray", // Placeholder text color
-                },
-              }}
-            />
-
-            <IconButton>
-              <SearchIcon sx={{ color: "#fff" }} />
-            </IconButton>
-          </Box>
+        <Box
+          sx={{
+            marginRight: "25px",
+            width: "100px",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
           <IconButton color="inherit">
-            <Badge badgeContent={4} color="error">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-          <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{
-              "aria-labelledby": "basic-button",
-            }}
-          >
-            <MenuItem>{userData.email}</MenuItem>
-            <MenuItem onClick={handleClose}>
-              <Link
-                to={"/userProfile"}
-                style={{ textDecoration: "none", color: "black" }}
-              >
-                Profile
-              </Link>
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                localStorage.removeItem("userId");
-                handleClose();
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                width: "30px",
               }}
             >
-              <Link
-                to={"/login"}
-                style={{ textDecoration: "none", color: "black" }}
+              <Button id="basic-button" onClick={handleClick}>
+                <Badge badgeContent={4} color="error">
+                  <NotificationsIcon />
+                </Badge>
+              </Button>
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                  "aria-labelledby": "basic-button",
+                }}
               >
-                Logout
-              </Link>
-            </MenuItem>
-          </Menu>
+                {/* showing emailid of current user fetching data from localstoage */}
+                <MenuItem>{userData?.email}</MenuItem>
+                <MenuItem onClick={handleClose}>
+                  <Link
+                    to={"/userProfile"}
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
+                    Profile
+                  </Link>
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    sessionStorage.removeItem("authToken");
+                    handleClose();
+                  }}
+                >
+                  <Link
+                    to={"/login"}
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
+                    Logout
+                  </Link>
+                </MenuItem>
+              </Menu>
+            </div>
+          </IconButton>
           <IconButton color="inherit">
-            <div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                width: "30px",
+              }}
+            >
               <Button id="basic-button" onClick={handleClick}>
                 <AccountCircle />
               </Button>
@@ -127,7 +133,7 @@ export default function Header() {
                   "aria-labelledby": "basic-button",
                 }}
               >
-                <MenuItem>{userData.email}</MenuItem>
+                <MenuItem>{userData?.email}</MenuItem>
                 <MenuItem onClick={handleClose}>
                   <Link
                     to={"/userProfile"}
