@@ -8,6 +8,9 @@ import TransactionCard from "./TransectionCard";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 
 export default function DashboardComponent() {
+  let TotalBalance = JSON.parse(localStorage.getItem("TotalWalletBalance"));
+  let TotalIncome = JSON.parse(localStorage.getItem("TotalIncome"));
+  let TotalExpanse = JSON.parse(localStorage.getItem("TotalExpanse"));
   return (
     <Container sx={{ mt: "45px" }}>
       <Box
@@ -46,36 +49,28 @@ export default function DashboardComponent() {
             Home <KeyboardDoubleArrowRightIcon /> Dashboard
           </Typography>
         </Box>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={3}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={4}>
             <CardComponent
               title="Total Balance"
-              value="$432,568"
-              subtitle="2.47% Last month $24,478"
+              value={`$ ${TotalBalance}`}
+              subtitle="Last Updated"
             />
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} md={4}>
             <CardComponent
-              title="Total Balance"
-              value="$432,568"
-              subtitle="2.47% Last month $24,478"
+              title="Total Income"
+              value={`$ ${TotalIncome}`}
+              subtitle="Last Updated"
             />
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} md={4}>
             <CardComponent
-              title="Total Balance"
-              value="$432,568"
-              subtitle="2.47% Last month $24,478"
+              title="Total Expanse"
+              value={`$ ${TotalExpanse}`}
+              subtitle="Last Updated"
             />
           </Grid>
-          <Grid item xs={12} md={3}>
-            <CardComponent
-              title="Total Balance"
-              value="$432,568"
-              subtitle="2.47% Last month $24,478"
-            />
-          </Grid>
-          {/* Repeat for other cards */}
         </Grid>
 
         <Grid container spacing={3} sx={{ mt: 3 }}>
@@ -95,7 +90,7 @@ export default function DashboardComponent() {
 
         <Grid container spacing={3} sx={{ mt: 3, mb: 3 }}>
           <Grid item xs={12}>
-            <TransactionCard />
+            <TransactionCard tableHeight="500px" />
           </Grid>
         </Grid>
       </Box>
