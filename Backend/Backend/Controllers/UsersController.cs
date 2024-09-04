@@ -39,16 +39,16 @@ namespace Backend.Controllers
             return response;
         }
 
-        [HttpPost]
-        [Route("viewUser/{id}")]
-        public Response viewUser(int id)
-        {
-            Response response = new Response();
-            Dal dal = new Dal();
-            SqlConnection connection = new SqlConnection(_connectionString);
-            response = dal.viewUser(id, connection);
-            return response;
-        }
+        //[HttpPost]
+        //[Route("viewUser/{id}")]
+        //public Response viewUser(int id)
+        //{
+        //    Response response = new Response();
+        //    Dal dal = new Dal();
+        //    SqlConnection connection = new SqlConnection(_connectionString);
+        //    response = dal.viewUser(id, connection);
+        //    return response;
+        //}
 
         [HttpPost]
         [Route("editUser")]
@@ -72,16 +72,16 @@ namespace Backend.Controllers
             return response;
         }
 
-        [HttpPost]
-        [Route("viewWallet")]
-        public Response viewWallet(Wallets wallets)
-        {
-            Response response = new Response();
-            Dal dal = new Dal();
-            SqlConnection connection = new SqlConnection(_connectionString);
-            response = dal.viewWallet(wallets, connection);
-            return response;
-        }
+        //[HttpPost]
+        //[Route("viewWallet")]
+        //public Response viewWallet(Wallets wallets)
+        //{
+        //    Response response = new Response();
+        //    Dal dal = new Dal();
+        //    SqlConnection connection = new SqlConnection(_connectionString);
+        //    response = dal.viewWallet(wallets, connection);
+        //    return response;
+        //}
 
         [HttpPost]
         [Route("editWallet")]
@@ -107,7 +107,6 @@ namespace Backend.Controllers
 
         [HttpPost]
         [Route("addTransection")]
-
         public Response addTransection(Transections transection)
         {
             Response response = new Response();
@@ -115,16 +114,16 @@ namespace Backend.Controllers
             SqlConnection connection = new SqlConnection(_connectionString);
             response = dal.addTransection(transection, connection);
             return response;
-        }
+            }
 
         [HttpPost]
         [Route("editTransection")]
-        public Response editTransection(Transections transection)
+        public Response editTransection(Transections transections)
         {
             Response response = new Response();
             Dal dal = new Dal();
             SqlConnection connection = new SqlConnection(_connectionString);
-            response = dal.editTransection(transection, connection);
+            response = dal.editTransection(transections, connection);
             return response;
         }
 
@@ -186,14 +185,14 @@ namespace Backend.Controllers
         }
 
         [HttpGet]
-        [Route("showTransectionsList")]
+        [Route("showTransectionsList/{id}")]
 
-        public Response showTransectionsList()
+        public Response showTransectionsList(int id)
         {
             Response response = new Response();
             Dal dal = new Dal();
             SqlConnection connection = new SqlConnection(_connectionString);
-            response = dal.showTransectionsList(connection);
+            response = dal.showTransectionsList(id, connection);
             return response;
         }
 
@@ -208,8 +207,49 @@ namespace Backend.Controllers
             return response;
         }
 
+        [HttpGet]
+        [Route("income/{id}")]
+        public Response income(int id)
+        {
+            Response response = new Response();
+            Dal dal = new Dal();
+            SqlConnection connection = new SqlConnection(_connectionString);
+            response = dal.showincomeById(id, connection);
+            return response;
+        }
 
+        [HttpGet]
+        [Route("expanse/{id}")]
+        public Response expanse(int id)
+        {
+            Response response = new Response();
+            Dal dal = new Dal();
+            SqlConnection connection = new SqlConnection(_connectionString);
+            response = dal.showexpanseById(id, connection);
+            return response;
+        }
 
+        [HttpGet]
+        [Route("category/{id}")]
+        public Response category(int id)
+        {
+            Response response = new Response();
+            Dal dal = new Dal();
+            SqlConnection connection = new SqlConnection(_connectionString);
+            response = dal.showcategoryById(id, connection);
+            return response;
+        }
+
+        [HttpGet]
+        [Route("notifications/{id}")]
+        public Response notifications(int id)
+        {
+            Response response = new Response();
+            Dal dal = new Dal();
+            SqlConnection connection = new SqlConnection(_connectionString);
+            response = dal.shownotificationsByID(id, connection);
+            return response;
+        }
 
 
 

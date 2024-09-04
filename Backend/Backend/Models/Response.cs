@@ -18,6 +18,10 @@ namespace Backend.Models
         public Wallets wallet { get; set; }
         public List<Transections> listTransections { get; set; }
         public Transections transections { get; set; }
+        public List<Transections> incomeList { get; set; }
+        public List<Transections> expanseList { get; set; }
+        public List<Category> categoryList { get; set; }
+        public List<Notifications> notificationsList { get; set; }
         public string Token { get; set; }
 
     }

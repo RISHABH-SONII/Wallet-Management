@@ -6,7 +6,6 @@ namespace Backend.Models
     {
         public int WalletID { get; set; }
         public int UserID { get; set; }
-        public string Name { get; set; } = string.Empty;
         public string Type { get; set; }
         public Decimal InitialBalance { get; set; }
         public DateTime CreatedAt { get; set; }

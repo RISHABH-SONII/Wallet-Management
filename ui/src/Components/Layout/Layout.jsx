@@ -32,8 +32,6 @@ const Layout = ({ children }) => {
             component="main"
             sx={{ flexGrow: 1, ml: "215px", backgroundColor: "#14172B" }}
           >
-            {" "}
-            {/* Adjust ml and mt based on sidebar width and header height */}
             <div>{children}</div>
           </Box>
         </Box>
