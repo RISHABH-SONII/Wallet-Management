@@ -62,8 +62,6 @@ export default function SampleProfile() {
             )
             .then((responseTwo) => responseTwo.data)
             .then((finalresponseTwo) => {
-              // console.log(finalresponseTwo.user);
-              // console.log(finalresponseTwo.statusMessage);
               toast.success("User Profile Updated Successfully.");
               localStorage.setItem(
                 "userData",
@@ -227,7 +225,7 @@ export default function SampleProfile() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
-                backgroundColor: "#1F2130",
+                backgroundColor: "#1a1a2e",
                 color: "#fff",
                 padding: "20px",
                 display: "flex",
@@ -265,7 +263,7 @@ export default function SampleProfile() {
             <Card
               className="mycard"
               sx={{
-                backgroundColor: "#1F2130",
+                backgroundColor: "#1a1a2e",
                 color: "#fff",
                 padding: "10px",
               }}
@@ -303,7 +301,7 @@ export default function SampleProfile() {
               className="mycard"
               sx={{
                 height: "374.81px",
-                backgroundColor: "#1F2130",
+                backgroundColor: "#1a1a2e",
                 color: "#fff",
                 paddingLeft: "10px",
                 paddingRight: "10px",
@@ -338,25 +336,28 @@ export default function SampleProfile() {
             <Card
               className="mycard"
               sx={{
-                backgroundColor: "#1F2130",
+                backgroundColor: "#1a1a2e",
                 color: "#fff",
                 padding: "10px",
               }}
             >
               <CardContent>
                 <Typography variant="h6">Settings</Typography>
+                <Divider
+                  sx={{ margin: "10px 0px", backgroundColor: "white" }}
+                />
                 <Box
                   sx={{ display: "flex", alignItems: "center", gap: "20px" }}
                 >
                   <Button
                     variant="outlined"
-                    sx={{ marginTop: "10px", display: "block" }}
+                    sx={{ marginTop: "20px", display: "block" }}
                   >
                     Security Settings
                   </Button>
                   <Button
                     variant="outlined"
-                    sx={{ marginTop: "10px", display: "block" }}
+                    sx={{ marginTop: "20px", display: "block" }}
                   >
                     Payment Methods
                   </Button>
@@ -370,20 +371,23 @@ export default function SampleProfile() {
             <Card
               className="mycard"
               sx={{
-                backgroundColor: "#1F2130",
+                backgroundColor: "#1a1a2e",
                 color: "#fff",
                 padding: "10px",
               }}
             >
               <CardContent>
                 <Typography variant="h6">Support</Typography>
+                <Divider
+                  sx={{ margin: "10px 0px", backgroundColor: "white" }}
+                />
                 <Box
                   sx={{ display: "flex", alignItems: "center", gap: "20px" }}
                 >
-                  <Button variant="outlined" sx={{ marginTop: "10px" }}>
+                  <Button variant="outlined" sx={{ marginTop: "20px" }}>
                     Help Center
                   </Button>
-                  <Button variant="outlined" sx={{ marginTop: "10px" }}>
+                  <Button variant="outlined" sx={{ marginTop: "20px" }}>
                     FeedBack
                   </Button>
                 </Box>
