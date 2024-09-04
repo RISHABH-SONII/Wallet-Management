@@ -1,10 +1,11 @@
-import React from 'react'
-import Layout from '../Components/Layout/Layout'
+import React from "react";
+import Layout from "../Components/Layout/Layout";
+import NotificationsComponent from "../Components/NotificationsComponent";
 
 export default function Notifications() {
   return (
     <Layout>
-      <h1>Notifications Page</h1>
+      <NotificationsComponent />
     </Layout>
-  )
+  );
 }
