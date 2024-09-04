@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Line } from 'react-chartjs-2';
-import { Card, CardContent, Typography } from '@mui/material';
-import './ChartComponent.css';
+import React, { useEffect, useState } from "react";
+import { Line } from "react-chartjs-2";
+import { Card, CardContent, Typography } from "@mui/material";
+import "./ChartComponent.css";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,7 +11,7 @@ import {
   Title,
   Tooltip,
   Legend,
-} from 'chart.js';
+} from "chart.js";
 
 ChartJS.register(
   CategoryScale,
@@ -24,26 +24,15 @@ ChartJS.register(
 );
 
 const ChartComponent = () => {
-  const [refresh, setRefresh] = useState(false);
-  console.log(refresh);
-
-  const handleMouseEnter = () => {
-    setRefresh((refresh) => !refresh); // Toggle the state to trigger re-render
-  };
-
-  useEffect(() => {
-    console.log('Component has been refreshed due to state change.');
-  }, [refresh]);
-
   const data = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+    labels: ["January", "February", "March", "April", "May", "June"],
     datasets: [
       {
-        label: 'Balance Trends',
+        label: "Balance Trends",
         data: [150, 200, 180, 220, 240, 260],
         fill: true,
-        backgroundColor: 'rgba(75,192,192,0.4)',
-        borderColor: 'rgba(75,192,192,1)',
+        backgroundColor: "rgba(75,192,192,0.4)",
+        borderColor: "rgba(75,192,192,1)",
       },
     ],
   };
@@ -52,17 +41,20 @@ const ChartComponent = () => {
     responsive: true,
     plugins: {
       legend: {
-        position: 'top',
+        position: "top",
       },
       title: {
         display: true,
-        text: 'Balance Trends',
+        text: "Balance Trends",
       },
     },
   };
 
   return (
-    <Card className='chartCard' sx={{ backgroundColor: '#1F2130', color: '#ffffff' }} onMouseEnter={handleMouseEnter}>
+    <Card
+      className="chartCard"
+      sx={{ backgroundColor: "#1a1a2e", color: "#ffffff" }}
+    >
       <CardContent>
         <Typography variant="h6" gutterBottom>
           Balance Trends
@@ -71,6 +63,6 @@ const ChartComponent = () => {
       </CardContent>
     </Card>
   );
-}
+};
 
 export default ChartComponent;
