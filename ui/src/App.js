@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./Pages/HomePage";
 import UserProfile from "./Pages/UserProfile";
 import Wallet from "./Pages/Wallet";
-import Analytics from "./Pages/Analytics";
 import Notifications from "./Pages/Notifications";
 import Settings from "./Pages/Settings";
 import PageNotFound from "./Pages/Notifications";
@@ -11,6 +10,7 @@ import Support from "./Pages/Support";
 import SampleProfile from "./Components/UserProfile";
 import Login from "./Pages/Login";
 import SignUp from "./Pages/SignUp";
+import Transections from "./Pages/Transections";
 function App() {
   return (
     <div className="App">
@@ -21,7 +21,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/userProfile" element={<UserProfile />} />
           <Route path="/wallet" element={<Wallet />} />
-          <Route path="/analytics" element={<Analytics />} />
+          <Route path="/transections" element={<Transections />} />
           <Route path="/notification" element={<Notifications />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/support" element={<Support />} />
