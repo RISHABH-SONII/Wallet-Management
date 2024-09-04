@@ -1,5 +1,6 @@
-import React from 'react';
-import './TransectionCard.css';
+import React, { useEffect, useState } from "react";
+import "./TransectionCard.css";
+import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import {
   Card,
   CardContent,
@@ -12,175 +13,157 @@ import {
   TableRow,
   Paper,
   Typography,
-} from '@mui/material';
+  Box,
+  Container,
+  Button,
+  Modal,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  OutlinedInput,
+  MenuItem,
+} from "@mui/material";
+import axios from "axios";
+import { toast } from "react-toastify";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import CloseIcon from "@mui/icons-material/Close";
+import EditTransactionWalletComponent from "./EditTransactionWalletComponent";
 
-const TransactionCard = () => {
-  const transactions = [
-    { category: 'Beauty', date: '12.12.2023', description: 'Grocery Items and Beverage soft drinks', amount: '-32.20', currency: 'USD' },
-    { category: 'Bills & Fees', date: '12.12.2023', description: 'Grocery Items and Beverage soft drinks', amount: '-32.20', currency: 'USD' },
-    { category: 'Car', date: '12.12.2023', description: 'Grocery Items and Beverage soft drinks', amount: '-32.20', currency: 'USD' },
-    { category: 'Education', date: '12.12.2023', description: 'Grocery Items and Beverage soft drinks', amount: '-32.20', currency: 'USD' },
-    { category: 'Entertainment', date: '12.12.2023', description: 'Grocery Items and Beverage soft drinks', amount: '-32.20', currency: 'USD' },
-    { category: 'Beauty', date: '12.12.2023', description: 'Grocery Items and Beverage soft drinks', amount: '-32.20', currency: 'USD' },
-    { category: 'Bills & Fees', date: '12.12.2023', description: 'Grocery Items and Beverage soft drinks', amount: '-32.20', currency: 'USD' },
-    { category: 'Car', date: '12.12.2023', description: 'Grocery Items and Beverage soft drinks', amount: '-32.20', currency: 'USD' },
-    { category: 'Education', date: '12.12.2023', description: 'Grocery Items and Beverage soft drinks', amount: '-32.20', currency: 'USD' },
-    { category: 'Entertainment', date: '12.12.2023', description: 'Grocery Items and Beverage soft drinks', amount: '-32.20', currency: 'USD' },
-  
-  ];
+export default function TransactionCard({ tableHeight = "100%" }) {
+  let userdata = JSON.parse(localStorage.getItem("userData"));
+  let [transectionList, setTransectionList] = useState([]);
+  let [showEditTransectionComponent, setShowEditTransectionComponent] =
+    useState(false);
+  let [editTransactionIDContainer, setEditTransactionIDContainer] = useState(0);
+
+  let editComponent = (transactionID) => {
+    setShowEditTransectionComponent(!showEditTransectionComponent);
+    setEditTransactionIDContainer(transactionID);
+  };
+
+  let fetchTransections = () => {
+    try {
+      let userId = userdata.userId;
+      axios
+        .get(`https://localhost:7242/api/Users/showTransectionsList/${userId}`)
+        .then((response1) => response1.data)
+        .then((finalresponse2) => {
+          console.log(finalresponse2);
+          if (finalresponse2.statusCode === 200) {
+            setTransectionList(finalresponse2.listTransections);
+            console.log(transectionList);
+          } else if (finalresponse2.statusCode === 100) {
+            toast.info("No Transection Is Created");
+            setTransectionList([]);
+          }
+        });
+    } catch (error) {
+      toast.error("Error fetching transections data:", error);
+      setTransectionList([]);
+    }
+  };
+
+  useEffect(() => {
+    fetchTransections();
+  }, []);
 
   return (
-    <Card className='transectionCard' sx={{ backgroundColor: '#1F2130', borderRadius: 1, color: '#fff' }}>
-      <CardHeader title="Transaction History" /> 
-      <CardContent>
-        <TableContainer component={Paper} className='tableWrapper'>
-          <Table style={{ backgroundColor: '#1F2130', borderRadius: "2px" }}>
-            <TableHead className='headProperty'>
-              <TableRow>
-                <TableCell sx={{ color: '#fff' }}>Category</TableCell>
-                <TableCell sx={{ color: '#fff' }}>Date</TableCell>
-                <TableCell sx={{ color: '#fff' }}>Description</TableCell>
-                <TableCell sx={{ color: '#fff' }}>Amount</TableCell>
-                <TableCell sx={{ color: '#fff' }}>Currency</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {transactions.map((transaction, index) => (
-                <TableRow className='tr' key={index}>
-                  <TableCell sx={{ color: '#fff' }}>{transaction.category}</TableCell>
-                  <TableCell sx={{ color: '#fff' }}>{transaction.date}</TableCell>
-                  <TableCell sx={{ color: '#fff' }}>{transaction.description}</TableCell>
-                  <TableCell sx={{ color: '#fff' }}>{transaction.amount}</TableCell>
-                  <TableCell sx={{ color: '#fff' }}>{transaction.currency}</TableCell>
+    <>
+      {/* Add New Transection Model */}
+      {showEditTransectionComponent && (
+        <EditTransactionWalletComponent
+          transactionID={editTransactionIDContainer}
+        />
+      )}
+
+      <Card
+        className="transectionCard"
+        sx={{ backgroundColor: "#1a1a2e", borderRadius: 1, color: "#fff" }}
+      >
+        <CardHeader title="Transaction History" />
+        <CardContent>
+          <TableContainer
+            sx={{ maxHeight: tableHeight }}
+            component={Paper}
+            className="tableWrapper"
+          >
+            <Table style={{ backgroundColor: "#1a1a2e", borderRadius: "2px" }}>
+              <TableHead
+                className="headProperty"
+                style={{ backgroundColor: "#1a1a2e" }}
+              >
+                <TableRow>
+                  <TableCell sx={{ color: "#fff" }}>Category</TableCell>
+                  <TableCell sx={{ color: "#fff" }}>Date</TableCell>
+                  <TableCell sx={{ color: "#fff" }}>Wallet Name</TableCell>
+                  <TableCell sx={{ color: "#fff" }}>Description</TableCell>
+                  <TableCell sx={{ color: "#fff" }}>Amount</TableCell>
+                  <TableCell sx={{ color: "#fff" }}>Transection Type</TableCell>
+                  <TableCell sx={{ color: "#fff" }}>Edit</TableCell>
+                  <TableCell sx={{ color: "#fff" }}>Delete</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </CardContent>
-    </Card>
+              </TableHead>
+              <TableBody>
+                {transectionList.map((transaction, index) => (
+                  <TableRow className="tr" key={index}>
+                    <TableCell sx={{ color: "#fff" }}>
+                      {transaction.categoryType}
+                    </TableCell>
+                    <TableCell sx={{ color: "#fff" }}>
+                      {transaction.transactionDate}
+                    </TableCell>
+                    <TableCell sx={{ color: "#fff" }}>
+                      {transaction.walletType}
+                    </TableCell>
+                    <TableCell sx={{ color: "#fff" }}>
+                      {transaction.description}
+                    </TableCell>
+                    <TableCell sx={{ color: "#fff" }}>
+                      {transaction.amount}
+                    </TableCell>
+                    <TableCell sx={{ color: "#fff" }}>
+                      {transaction.transactionType}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        color: "#fff",
+                      }}
+                    >
+                      <Button
+                        sx={{
+                          alignItems: "center",
+                          justifyContent: "start",
+                        }}
+                        onClick={() => editComponent(transaction.transactionID)}
+                      >
+                        <EditIcon />
+                      </Button>
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        color: "#fff",
+                      }}
+                    >
+                      <Button
+                        sx={{
+                          color: "red",
+                          right: 2,
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <DeleteIcon />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </CardContent>
+      </Card>
+    </>
   );
-};
-
-export default TransactionCard;
-
-
-// import React from 'react';
-// import {
-//   Card,
-//   CardContent,
-//   CardHeader,
-//   Table,
-//   TableBody,
-//   TableCell,
-//   TableContainer,
-//   TableHead,
-//   TableRow,
-//   Paper,
-//   Typography,
-// } from '@mui/material';
-
-// const TransactionCard = () => {
-//   const transactions = [
-//     { category: 'Beauty', date: '12.12.2023', description: 'Grocery Items and Beverage soft drinks', amount: '-32.20', currency: 'USD' },
-//     { category: 'Bills & Fees', date: '12.12.2023', description: 'Grocery Items and Beverage soft drinks', amount: '-32.20', currency: 'USD' },
-//     { category: 'Car', date: '12.12.2023', description: 'Grocery Items and Beverage soft drinks', amount: '-32.20', currency: 'USD' },
-//     { category: 'Education', date: '12.12.2023', description: 'Grocery Items and Beverage soft drinks', amount: '-32.20', currency: 'USD' },
-//     { category: 'Entertainment', date: '12.12.2023', description: 'Grocery Items and Beverage soft drinks', amount: '-32.20', currency: 'USD' },
-//     { category: 'Beauty', date: '12.12.2023', description: 'Grocery Items and Beverage soft drinks', amount: '-32.20', currency: 'USD' },
-//     { category: 'Bills & Fees', date: '12.12.2023', description: 'Grocery Items and Beverage soft drinks', amount: '-32.20', currency: 'USD' },
-//     { category: 'Car', date: '12.12.2023', description: 'Grocery Items and Beverage soft drinks', amount: '-32.20', currency: 'USD' },
-//     { category: 'Education', date: '12.12.2023', description: 'Grocery Items and Beverage soft drinks', amount: '-32.20', currency: 'USD' },
-//     { category: 'Entertainment', date: '12.12.2023', description: 'Grocery Items and Beverage soft drinks', amount: '-32.20', currency: 'USD' },
-//   ];
-
-//   return (
-//     <Card sx={{ backgroundColor: '#1F2130', borderRadius: 2, color: '#fff',height:"100%"}}>
-//       <CardHeader title="Transaction History" />
-//       <CardContent>
-//         <TableContainer component={Paper}>
-//           <Table sx={{ backgroundColor: '#1F2130', borderRadius: 2, color: '#fff',height:"100%"}}>
-//             <TableHead>
-//               <TableRow>
-//                 <TableCell>Category</TableCell>
-//                 <TableCell>Date</TableCell>
-//                 <TableCell>Description</TableCell>
-//                 <TableCell>Amount</TableCell>
-//                 <TableCell>Currency</TableCell>
-//               </TableRow>
-//             </TableHead>
-//             <TableBody>
-//               {transactions.map((transaction, index) => (
-//                 <TableRow key={index}>
-//                   <TableCell>{transaction.category}</TableCell>
-//                   <TableCell>{transaction.date}</TableCell>
-//                   <TableCell>{transaction.description}</TableCell>
-//                   <TableCell>{transaction.amount}</TableCell>
-//                   <TableCell>{transaction.currency}</TableCell>
-//                 </TableRow>
-//               ))}
-//             </TableBody>
-//           </Table>
-//         </TableContainer>
-//       </CardContent>
-//     </Card>
-//   );
-// };
-
-// export default TransactionCard;
-
-
-// // import React from "react";
-// // import { Card, Table } from "react-bootstrap";
-// // import './TransectionCard.css';
-// // const TransactionCard = () => {
-// //   const transactions = [
-// //     { category: "Beauty", date: "12.12.2023", description: "Grocery Items and Beverage soft drinks", amount: "-32.20", currency: "USD" },
-// //     { category: "Bills & Fees", date: "12.12.2023", description: "Grocery Items and Beverage soft drinks", amount: "-32.20", currency: "USD" },
-// //     { category: "Car", date: "12.12.2023", description: "Grocery Items and Beverage soft drinks", amount: "-32.20", currency: "USD" },
-// //     { category: "Education", date: "12.12.2023", description: "Grocery Items and Beverage soft drinks", amount: "-32.20", currency: "USD" },
-// //     { category: "Entertainment", date: "12.12.2023", description: "Grocery Items and Beverage soft drinks", amount: "-32.20", currency: "USD" },
-// //     { category: "Beauty", date: "12.12.2023", description: "Grocery Items and Beverage soft drinks", amount: "-32.20", currency: "USD" },
-// //     { category: "Bills & Fees", date: "12.12.2023", description: "Grocery Items and Beverage soft drinks", amount: "-32.20", currency: "USD" },
-// //     { category: "Car", date: "12.12.2023", description: "Grocery Items and Beverage soft drinks", amount: "-32.20", currency: "USD" },
-// //     { category: "Education", date: "12.12.2023", description: "Grocery Items and Beverage soft drinks", amount: "-32.20", currency: "USD" },
-// //     { category: "Entertainment", date: "12.12.2023", description: "Grocery Items and Beverage soft drinks", amount: "-32.20", currency: "USD" },
-// //   ];
-
-// //   return (
-// //     <div className="transectionCard">
-// //     <Card className="cardClass">
-// //       <Card.Title className="transCardTitle">Transaction History</Card.Title>
-// //       <div className="tableWrapper">
-// //       <Table hover variant="dark" className="tablePropertys">
-// //         <thead>
-// //           <tr>
-// //             <th>Category</th>
-// //             <th>Date</th>
-// //             <th>Description</th>
-// //             <th>Amount</th>
-// //             <th>Currency</th>
-// //           </tr>
-// //         </thead>
-// //         <tbody>
-// //           {transactions.map((transaction, index) => (
-// //             <tr key={index}>
-// //               <td>
-// //                 {/* To Add The Category Images*/}
-// //                 {transaction.category}
-// //               </td>
-// //               <td>{transaction.date}</td>
-// //               <td>{transaction.description}</td>
-// //               <td>{transaction.amount}</td>
-// //               <td>{transaction.currency}</td>
-// //             </tr>
-// //           ))}
-// //         </tbody>
-// //       </Table>
-// //       </div>
-// //     </Card>
-// //     </div>
-// //   );
-// // };
-
-// // export default TransactionCard;
+}
