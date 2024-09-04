@@ -1,34 +1,52 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   AppBar,
   Toolbar,
   IconButton,
   Typography,
-  InputBase,
   Badge,
   Box,
+  Divider,
+  Menu,
+  MenuItem,
+  Button,
 } from "@mui/material";
 import {
-  Search as SearchIcon,
   Notifications as NotificationsIcon,
   AccountCircle,
 } from "@mui/icons-material";
-import Button from "@mui/material/Button";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import { Link } from "react-router-dom";
-// import './Header.css';
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Header() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
+  const userData = JSON.parse(localStorage.getItem("userData"));
+  let NotificationsList =
+    JSON.parse(localStorage.getItem("NotificationsList")) || [];
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [profileAnchorEl, setProfileAnchorEl] = useState(null);
+  const navigate = useNavigate();
+
+  const handleNotificationsClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+
+  const handleNotificationsClose = () => {
     setAnchorEl(null);
   };
-  const userData = JSON.parse(localStorage.getItem("userData"));
+
+  const handleMoreClick = () => {
+    navigate("/notifications"); // Navigate to the notifications page
+    handleNotificationsClose();
+  };
+
+  const handleProfileClick = (event) => {
+    setProfileAnchorEl(event.currentTarget);
+  };
+
+  const handleProfileClose = () => {
+    setProfileAnchorEl(null);
+  };
+
+  const displayedNotifications = NotificationsList.slice(0, 5); // Display only the first 5 notifications
 
   return (
     <AppBar
@@ -65,99 +83,74 @@ export default function Header() {
             justifyContent: "space-between",
           }}
         >
-          <IconButton color="inherit">
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                width: "30px",
+          <IconButton color="inherit" onClick={handleNotificationsClick}>
+            <Badge badgeContent={NotificationsList.length} color="error">
+              <NotificationsIcon />
+            </Badge>
+          </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleNotificationsClose}
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            transformOrigin={{ vertical: "top", horizontal: "right" }}
+          >
+            {displayedNotifications.length > 0 ? (
+              displayedNotifications.map((notification, index) => (
+                <MenuItem key={index} onClick={handleNotificationsClose}>
+                  <Typography variant="body2">
+                    {notification.message}
+                  </Typography>
+                </MenuItem>
+              ))
+            ) : (
+              <MenuItem disabled>
+                <Typography variant="body2">No notifications</Typography>
+              </MenuItem>
+            )}
+            <Divider />
+            <MenuItem onClick={handleMoreClick}>
+              <Typography variant="body2" color="primary">
+                More...
+              </Typography>
+            </MenuItem>
+          </Menu>
+
+          <IconButton color="inherit" onClick={handleProfileClick}>
+            <AccountCircle />
+          </IconButton>
+          <Menu
+            id="profile-menu"
+            anchorEl={profileAnchorEl}
+            open={Boolean(profileAnchorEl)}
+            onClose={handleProfileClose}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+          >
+            <MenuItem>{userData?.email}</MenuItem>
+            <MenuItem onClick={handleProfileClose}>
+              <Link
+                to={"/userProfile"}
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                Profile
+              </Link>
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                sessionStorage.removeItem("authToken");
+                handleProfileClose();
               }}
             >
-              <Button id="basic-button" onClick={handleClick}>
-                <Badge badgeContent={4} color="error">
-                  <NotificationsIcon />
-                </Badge>
-              </Button>
-              <Menu
-                id="basic-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                MenuListProps={{
-                  "aria-labelledby": "basic-button",
-                }}
+              <Link
+                to={"/login"}
+                style={{ textDecoration: "none", color: "black" }}
               >
-                {/* showing emailid of current user fetching data from localstoage */}
-                <MenuItem>{userData?.email}</MenuItem>
-                <MenuItem onClick={handleClose}>
-                  <Link
-                    to={"/userProfile"}
-                    style={{ textDecoration: "none", color: "black" }}
-                  >
-                    Profile
-                  </Link>
-                </MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    sessionStorage.removeItem("authToken");
-                    handleClose();
-                  }}
-                >
-                  <Link
-                    to={"/login"}
-                    style={{ textDecoration: "none", color: "black" }}
-                  >
-                    Logout
-                  </Link>
-                </MenuItem>
-              </Menu>
-            </div>
-          </IconButton>
-          <IconButton color="inherit">
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                width: "30px",
-              }}
-            >
-              <Button id="basic-button" onClick={handleClick}>
-                <AccountCircle />
-              </Button>
-              <Menu
-                id="basic-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                MenuListProps={{
-                  "aria-labelledby": "basic-button",
-                }}
-              >
-                <MenuItem>{userData?.email}</MenuItem>
-                <MenuItem onClick={handleClose}>
-                  <Link
-                    to={"/userProfile"}
-                    style={{ textDecoration: "none", color: "black" }}
-                  >
-                    Profile
-                  </Link>
-                </MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    sessionStorage.removeItem("authToken");
-                    handleClose();
-                  }}
-                >
-                  <Link
-                    to={"/login"}
-                    style={{ textDecoration: "none", color: "black" }}
-                  >
-                    Logout
-                  </Link>
-                </MenuItem>
-              </Menu>
-            </div>
-          </IconButton>
+                Logout
+              </Link>
+            </MenuItem>
+          </Menu>
         </Box>
       </Toolbar>
     </AppBar>
