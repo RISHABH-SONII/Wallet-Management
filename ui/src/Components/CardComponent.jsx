@@ -1,18 +1,37 @@
-import React from 'react';
-import { Card, CardContent, Typography } from '@mui/material';
-import './CardComponent.css';
+import React from "react";
+import { Card, CardContent, Divider, Typography } from "@mui/material";
+import "./CardComponent.css";
 
 export default function CardComponent({ title, value, subtitle }) {
   return (
-    <Card className='balanceCard' sx={{ backgroundColor: '#1F2130', color: '#ffffff' }}>
+    <Card
+      className="balanceCard"
+      sx={{ backgroundColor: "#1a1a2e", color: "#ffffff", borderRadius: "8px" }}
+    >
       <CardContent>
-        <Typography variant="h6" gutterBottom>
+        <Typography
+          variant="h6"
+          gutterBottom
+          style={{ color: "cornflowerblue" }}
+        >
           {title}
         </Typography>
-        <Typography variant="h4" component="div">
+        <Typography variant="h5" component="div" style={{ color: "gray" }}>
           {value}
         </Typography>
-        <Typography variant="body2" color="textSecondary">
+        <Divider
+          style={{
+            backgroundColor: "white",
+            height: "0.5px",
+            marginTop: "15px",
+            marginBottom: "15px",
+          }}
+        />
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          style={{ color: "cornflowerblue" }}
+        >
           {subtitle}
         </Typography>
       </CardContent>
